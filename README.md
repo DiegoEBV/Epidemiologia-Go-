@@ -3,7 +3,7 @@
 Entregable 1 (PC3): cargador concurrente + limpieza + EDA + entrenamiento paralelo
 (Parameter Server con goroutines y canales) + evaluación + análisis de impacto.
 
-## Dataset y Datos
+## Datos
 
 Descargar del Portal de Datos Abiertos y dejar en `data/`:
 
