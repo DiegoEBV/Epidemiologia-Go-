@@ -1,0 +1,52 @@
+08:48:59 CPUs disponibles: 2 · go1.24.7
+08:48:59 == Benchmark de carga sobre data/positivos_covid.csv (mediana de 3 corridas) ==
+08:49:06   secuencial           1.650 s     2778664 filas/s
+08:49:09   concurrente w=1      1.295 s     3539531 filas/s  speedup 1.27x
+08:49:12   concurrente w=2      0.803 s     5707598 filas/s  speedup 2.05x
+08:49:14   concurrente w=4      0.772 s     5941511 filas/s  speedup 2.14x
+08:49:16   concurrente w=8      0.717 s     6391124 filas/s  speedup 2.30x
+08:49:16 == Carga concurrente final (4 workers) ==
+08:49:17   positivos  leídas   4585360  válidas   4582537  descartadas    2823 (0.06%)  0.71s
+08:49:17       - Edad vacía / no numérica                     353
+08:49:17       - Edad fuera de rango (<0 o >110)               53
+08:49:17       - Fecha vacía o inválida                      2417
+08:49:17   fallecidos leídas    220918  válidas    220913  descartadas       5 (0.00%)  0.04s
+08:49:17       - Edad fuera de rango (<0 o >110)                3
+08:49:17       - Departamento vacío o fuera de catálogo         2
+08:49:17   dataset unificado: 4803450 registros · heap 159 MB
+08:49:17 == EDA == positivos 4582537 · fallecidos 220913 · letalidad global 4.82% · 225 provincias
+08:49:17   0-17   positivos   325449  fallecidos    1638  letalidad   0.50%
+08:49:17   18-29  positivos   994990  fallecidos    3036  letalidad   0.31%
+08:49:17   30-39  positivos  1049600  fallecidos    7587  letalidad   0.72%
+08:49:17   40-49  positivos   847200  fallecidos   18303  letalidad   2.16%
+08:49:17   50-59  positivos   638774  fallecidos   36160  letalidad   5.66%
+08:49:17   60-69  positivos   412000  fallecidos   54358  letalidad  13.19%
+08:49:17   70-79  positivos   207788  fallecidos   52378  letalidad  25.21%
+08:49:17   80+    positivos   106736  fallecidos   47453  letalidad  44.46%
+08:49:17 == Entrenamiento == train 3843178 · test 960272
+08:49:35   workers=1     5.970 s  speedup 1.00x  eficiencia 100%  pérdida 0.3974  AUC 0.9029
+08:49:45   workers=2     3.132 s  speedup 1.91x  eficiencia  95%  pérdida 0.3973  AUC 0.9029
+08:49:54   workers=4     3.072 s  speedup 1.94x  eficiencia  49%  pérdida 0.3973  AUC 0.9028
+08:50:04   workers=8     3.001 s  speedup 1.99x  eficiencia  25%  pérdida 0.3973  AUC 0.9028
+08:50:07   época 1  pérdida 0.41145  (0.51s)
+08:50:07   época 2  pérdida 0.39790  (0.53s)
+08:50:07   época 3  pérdida 0.39759  (0.49s)
+08:50:07   época 4  pérdida 0.39748  (0.48s)
+08:50:07   época 5  pérdida 0.39738  (0.47s)
+08:50:07   época 6  pérdida 0.39733  (0.50s)
+08:50:07 == Evaluación (test, umbral 0.5) ==
+08:50:07   AUC 0.9028 · accuracy 0.8156 · precisión 0.1808 · recall 0.8550 · F1 0.2985 · especificidad 0.8137
+08:50:07   matriz: TP 37683 FP 170707 TN 745491 FN 6391 · baseline (siempre 0) accuracy 0.9541
+08:50:07 == Impacto: casos graves esperados por provincia (casos desde 202312) ==
+08:50:07    1. LIMA           LIMA             positivos  28086  graves esperados   345.4  (12.3 por 1000)  60+: 27.6%
+08:50:07    2. LAMBAYEQUE     CHICLAYO         positivos   2333  graves esperados    40.7  (17.4 por 1000)  60+: 28.8%
+08:50:07    3. AREQUIPA       AREQUIPA         positivos   2984  graves esperados    33.4  (11.2 por 1000)  60+: 29.5%
+08:50:07    4. LA LIBERTAD    TRUJILLO         positivos   1524  graves esperados    25.8  (16.9 por 1000)  60+: 25.7%
+08:50:07    5. PIURA          PIURA            positivos   1505  graves esperados    18.8  (12.5 por 1000)  60+: 19.8%
+08:50:07    6. CALLAO         CALLAO           positivos   1105  graves esperados    11.7  (10.6 por 1000)  60+: 21.6%
+08:50:07    7. ICA            ICA              positivos    615  graves esperados    11.1  (18.1 por 1000)  60+: 25.9%
+08:50:07    8. ANCASH         SANTA            positivos    898  graves esperados     7.2  (8.0 por 1000)  60+: 19.3%
+08:50:07    9. JUNIN          HUANCAYO         positivos    614  graves esperados     6.9  (11.2 por 1000)  60+: 26.4%
+08:50:07   10. LORETO         MAYNAS           positivos    500  graves esperados     6.6  (13.2 por 1000)  60+: 23.8%
+
+Resultados guardados en results/resultados.json

@@ -1,0 +1,907 @@
+{
+  "fecha": "2026-11-07T08:48:59-05:00",
+  "cpus": 2,
+  "go_version": "go1.24.7",
+  "archivos": [
+    "data/positivos_covid.csv",
+    "data/fallecidos_covid.csv"
+  ],
+  "limpieza": [
+    {
+      "Fuente": "positivos",
+      "Leidas": 4585360,
+      "Validas": 4582537,
+      "Descartes": [
+        353,
+        53,
+        0,
+        0,
+        2417,
+        0
+      ],
+      "Workers": 4,
+      "Bloques": 16,
+      "Duracion": 714063256,
+      "FilasPorSeg": 6421503.923456328
+    },
+    {
+      "Fuente": "fallecidos",
+      "Leidas": 220918,
+      "Validas": 220913,
+      "Descartes": [
+        0,
+        3,
+        0,
+        2,
+        0,
+        0
+      ],
+      "Workers": 4,
+      "Bloques": 16,
+      "Duracion": 35406602,
+      "FilasPorSeg": 6239457.82766728
+    }
+  ],
+  "descarte_nombres": [
+    "Edad vacía / no numérica",
+    "Edad fuera de rango (\u003c0 o \u003e110)",
+    "Sexo vacío o no reconocido",
+    "Departamento vacío o fuera de catálogo",
+    "Fecha vacía o inválida",
+    "Número de columnas incorrecto"
+  ],
+  "memoria_heap_mb": 158.79387664794922,
+  "eda": {
+    "Total": [
+      4582537,
+      220913
+    ],
+    "PorEdad": [
+      [
+        325449,
+        994990,
+        1049600,
+        847200,
+        638774,
+        412000,
+        207788,
+        106736
+      ],
+      [
+        1638,
+        3036,
+        7587,
+        18303,
+        36160,
+        54358,
+        52378,
+        47453
+      ]
+    ],
+    "PorSexo": [
+      [
+        2375549,
+        2206988
+      ],
+      [
+        81600,
+        139313
+      ]
+    ],
+    "PorDept": [
+      [
+        51693,
+        160838,
+        46672,
+        299825,
+        56059,
+        112891,
+        172607,
+        148691,
+        30737,
+        61592,
+        132451,
+        157758,
+        184984,
+        133426,
+        2166729,
+        65819,
+        21480,
+        65520,
+        29479,
+        184949,
+        79385,
+        70666,
+        67533,
+        34572,
+        46181
+      ],
+      [
+        1410,
+        7414,
+        1701,
+        10695,
+        2431,
+        4631,
+        10967,
+        5322,
+        1302,
+        2970,
+        9142,
+        7649,
+        11096,
+        9525,
+        97648,
+        4509,
+        893,
+        1723,
+        1141,
+        13252,
+        4867,
+        3255,
+        2284,
+        1774,
+        3312
+      ]
+    ],
+    "PorOla": [
+      [
+        974850,
+        1252774,
+        1363611,
+        991302
+      ],
+      [
+        91445,
+        109455,
+        11495,
+        8518
+      ]
+    ],
+    "PorMes": {
+      "202003": [
+        1317,
+        181
+      ],
+      "202004": [
+        46497,
+        5134
+      ],
+      "202005": [
+        131513,
+        16363
+      ],
+      "202006": [
+        121560,
+        17461
+      ],
+      "202007": [
+        144009,
+        18501
+      ],
+      "202008": [
+        243262,
+        17668
+      ],
+      "202009": [
+        157164,
+        8437
+      ],
+      "202010": [
+        81291,
+        4471
+      ],
+      "202011": [
+        48237,
+        3229
+      ],
+      "202012": [
+        47696,
+        3885
+      ],
+      "202101": [
+        133642,
+        11174
+      ],
+      "202102": [
+        195811,
+        18645
+      ],
+      "202103": [
+        235406,
+        20691
+      ],
+      "202104": [
+        242382,
+        23109
+      ],
+      "202105": [
+        148462,
+        16692
+      ],
+      "202106": [
+        95254,
+        7722
+      ],
+      "202107": [
+        59957,
+        3481
+      ],
+      "202108": [
+        35359,
+        1850
+      ],
+      "202109": [
+        30043,
+        1140
+      ],
+      "202110": [
+        28762,
+        1066
+      ],
+      "202111": [
+        41643,
+        1107
+      ],
+      "202112": [
+        60844,
+        1283
+      ],
+      "202201": [
+        1010090,
+        3562
+      ],
+      "202202": [
+        216529,
+        3503
+      ],
+      "202203": [
+        24168,
+        1299
+      ],
+      "202204": [
+        10337,
+        741
+      ],
+      "202205": [
+        12933,
+        625
+      ],
+      "202206": [
+        53342,
+        542
+      ],
+      "202207": [
+        286575,
+        1025
+      ],
+      "202208": [
+        184170,
+        1429
+      ],
+      "202209": [
+        26748,
+        892
+      ],
+      "202210": [
+        8126,
+        429
+      ],
+      "202211": [
+        113982,
+        272
+      ],
+      "202212": [
+        184993,
+        423
+      ],
+      "202301": [
+        17829,
+        371
+      ],
+      "202302": [
+        4213,
+        287
+      ],
+      "202303": [
+        7589,
+        295
+      ],
+      "202304": [
+        9121,
+        337
+      ],
+      "202305": [
+        6163,
+        323
+      ],
+      "202306": [
+        5403,
+        291
+      ],
+      "202307": [
+        3214,
+        258
+      ],
+      "202308": [
+        1995,
+        249
+      ],
+      "202309": [
+        3147,
+        60
+      ],
+      "202310": [
+        2829,
+        26
+      ],
+      "202311": [
+        5569,
+        33
+      ],
+      "202312": [
+        26288,
+        40
+      ],
+      "202401": [
+        24720,
+        247
+      ],
+      "202402": [
+        2274,
+        62
+      ],
+      "202403": [
+        79,
+        2
+      ]
+    },
+    "SumaEdad": [
+      186916235,
+      14660006
+    ],
+    "EdadMedia": [
+      40.78881087048506,
+      66.36099278901649
+    ],
+    "Letalidad": [
+      0.5033046652470894,
+      0.3051286947607514,
+      0.7228467987804879,
+      2.160410764872521,
+      5.660844054391694,
+      13.19368932038835,
+      25.207422950314744,
+      44.45828961175236
+    ],
+    "LetalDept": [
+      2.727642040508386,
+      4.609607182382272,
+      3.6445834761741516,
+      3.56708079713166,
+      4.336502613318111,
+      4.1021870653993675,
+      6.353739998957169,
+      3.579234788924683,
+      4.235937144158506,
+      4.822054812313287,
+      6.902175144015523,
+      4.848565524410806,
+      5.99835661462613,
+      7.1387885419633355,
+      4.506701114906386,
+      6.850605448274814,
+      4.157355679702048,
+      2.6297313797313797,
+      3.8705519183147326,
+      7.1652185197000255,
+      6.1308811488316435,
+      4.60617552995783,
+      3.3820502569114357,
+      5.131320143468703,
+      7.171780602412247
+    ],
+    "LetalOla": [
+      9.380417500128225,
+      8.737010825575881,
+      0.8429823461383048,
+      0.85927396494711
+    ],
+    "LetalSexo": [
+      3.4349954473681663,
+      6.31235874413454
+    ],
+    "Provincias": 225
+  },
+  "bench_carga": [
+    {
+      "modo": "secuencial",
+      "workers": 1,
+      "segundos": 1.650202947,
+      "filas_por_seg": 2778664.2899505137,
+      "speedup": 1
+    },
+    {
+      "modo": "concurrente",
+      "workers": 1,
+      "segundos": 1.295470997,
+      "filas_por_seg": 3539531.1902918657,
+      "speedup": 1.2738246945099303
+    },
+    {
+      "modo": "concurrente",
+      "workers": 2,
+      "segundos": 0.803378169,
+      "filas_por_seg": 5707598.4597734315,
+      "speedup": 2.0540798974586028
+    },
+    {
+      "modo": "concurrente",
+      "workers": 4,
+      "segundos": 0.771749818,
+      "filas_por_seg": 5941510.957376086,
+      "speedup": 2.1382615305002894
+    },
+    {
+      "modo": "concurrente",
+      "workers": 8,
+      "segundos": 0.717457546,
+      "filas_por_seg": 6391123.803163678,
+      "speedup": 2.300070514555575
+    }
+  ],
+  "bench_train": [
+    {
+      "workers": 1,
+      "segundos": 5.970071299,
+      "speedup": 1,
+      "eficiencia": 1,
+      "perdida_final": 0.3973715743180671,
+      "auc": 0.9028684056449461,
+      "accuracy": 0.8157292933668794
+    },
+    {
+      "workers": 2,
+      "segundos": 3.132152082,
+      "speedup": 1.9060604794093774,
+      "eficiencia": 0.9530302397046887,
+      "perdida_final": 0.39732965021934175,
+      "auc": 0.9028523586215296,
+      "accuracy": 0.8164113917723311
+    },
+    {
+      "workers": 4,
+      "segundos": 3.07205995,
+      "speedup": 1.9433446599894642,
+      "eficiencia": 0.48583616499736604,
+      "perdida_final": 0.39732922087186634,
+      "auc": 0.9028371314738272,
+      "accuracy": 0.8155751703683957
+    },
+    {
+      "workers": 8,
+      "segundos": 3.001379921,
+      "speedup": 1.9891088286520193,
+      "eficiencia": 0.24863860358150242,
+      "perdida_final": 0.39731066395888187,
+      "auc": 0.9028491687906454,
+      "accuracy": 0.8134528550244098
+    }
+  ],
+  "config": {
+    "Workers": 4,
+    "Epocas": 6,
+    "LoteGlobal": 16384,
+    "TasaAprend": 0.8,
+    "Decaimiento": 0.5,
+    "L2": 0.00001,
+    "Semilla": 42
+  },
+  "historial": [
+    {
+      "Epoca": 1,
+      "Perdida": 0.4114499061785892,
+      "Duracion": 509764822
+    },
+    {
+      "Epoca": 2,
+      "Perdida": 0.39790247923233596,
+      "Duracion": 525161534
+    },
+    {
+      "Epoca": 3,
+      "Perdida": 0.3975941959888441,
+      "Duracion": 490440255
+    },
+    {
+      "Epoca": 4,
+      "Perdida": 0.3974753382687418,
+      "Duracion": 479936918
+    },
+    {
+      "Epoca": 5,
+      "Perdida": 0.39737559602348604,
+      "Duracion": 474140115
+    },
+    {
+      "Epoca": 6,
+      "Perdida": 0.39732922087186634,
+      "Duracion": 500594266
+    }
+  ],
+  "metricas": {
+    "N": 960272,
+    "TP": 37683,
+    "FP": 170707,
+    "TN": 745491,
+    "FN": 6391,
+    "Accuracy": 0.8155751703683957,
+    "Precision": 0.1808292144536686,
+    "Recall": 0.8549938739392839,
+    "F1": 0.2985217694403955,
+    "Especificidad": 0.8136789209319383,
+    "AUC": 0.9028371314738272,
+    "AccuracyBaseline": 0.95410258760018
+  },
+  "pesos": {
+    "Ola 1 (2020)": 0.8139555942463629,
+    "Ola 2 (dic20-oct21)": 0.8368624087226157,
+    "Ola 3 Ómicron (nov21-abr22)": -1.4610117267701053,
+    "Post-olas (may22+)": -1.707146871059025,
+    "dept_AMAZONAS": -0.326305814291838,
+    "dept_ANCASH": -0.17527256904061875,
+    "dept_APURIMAC": -0.2618422575302931,
+    "dept_AREQUIPA": -0.28049255896871084,
+    "dept_AYACUCHO": -0.22928549820806668,
+    "dept_CAJAMARCA": -0.2950901473784188,
+    "dept_CALLAO": 0.028921715234628338,
+    "dept_CUSCO": -0.32909522298767285,
+    "dept_HUANCAVELICA": -0.05542870457506325,
+    "dept_HUANUCO": -0.16235413902905357,
+    "dept_ICA": 0.3424609623399952,
+    "dept_JUNIN": -0.09721581851294607,
+    "dept_LA LIBERTAD": 0.09013921976509952,
+    "dept_LAMBAYEQUE": 0.23891081646482723,
+    "dept_LIMA": -0.08567023617187632,
+    "dept_LORETO": 0.12768504028393418,
+    "dept_MADRE DE DIOS": -0.010062801344603845,
+    "dept_MOQUEGUA": -0.3768182711315452,
+    "dept_PASCO": -0.05699934063230939,
+    "dept_PIURA": 0.3378178441062401,
+    "dept_PUNO": 0.2483652526233297,
+    "dept_SAN MARTIN": -0.1985321233271331,
+    "dept_TACNA": -0.16563436873841608,
+    "dept_TUMBES": 0.003113779595329019,
+    "dept_UCAYALI": 0.1713446465950257,
+    "edad_z": 1.416896291532262,
+    "edad_z^2": 0.0774987050996022,
+    "sexo_masculino": 0.5418376277095962
+  },
+  "sesgo": -1.5255911477426551,
+  "impacto_mes_desde": 202312,
+  "impacto_top": [
+    {
+      "Departamento": "LIMA",
+      "Provincia": "LIMA",
+      "Positivos": 28086,
+      "GravesEsperados": 345.44911086792865,
+      "TasaEsperada": 12.299690624080633,
+      "Edad60Mas": 27.640105390586058
+    },
+    {
+      "Departamento": "LAMBAYEQUE",
+      "Provincia": "CHICLAYO",
+      "Positivos": 2333,
+      "GravesEsperados": 40.66752127906187,
+      "TasaEsperada": 17.43142789501152,
+      "Edad60Mas": 28.846978139734247
+    },
+    {
+      "Departamento": "AREQUIPA",
+      "Provincia": "AREQUIPA",
+      "Positivos": 2984,
+      "GravesEsperados": 33.3754484059896,
+      "TasaEsperada": 11.184801744634584,
+      "Edad60Mas": 29.524128686327078
+    },
+    {
+      "Departamento": "LA LIBERTAD",
+      "Provincia": "TRUJILLO",
+      "Positivos": 1524,
+      "GravesEsperados": 25.828679603195596,
+      "TasaEsperada": 16.94795249553517,
+      "Edad60Mas": 25.721784776902886
+    },
+    {
+      "Departamento": "PIURA",
+      "Provincia": "PIURA",
+      "Positivos": 1505,
+      "GravesEsperados": 18.827690656501623,
+      "TasaEsperada": 12.510093459469516,
+      "Edad60Mas": 19.80066445182724
+    },
+    {
+      "Departamento": "CALLAO",
+      "Provincia": "CALLAO",
+      "Positivos": 1105,
+      "GravesEsperados": 11.683093109330446,
+      "TasaEsperada": 10.572934940570539,
+      "Edad60Mas": 21.6289592760181
+    },
+    {
+      "Departamento": "ICA",
+      "Provincia": "ICA",
+      "Positivos": 615,
+      "GravesEsperados": 11.125450729725838,
+      "TasaEsperada": 18.09016378817209,
+      "Edad60Mas": 25.853658536585368
+    },
+    {
+      "Departamento": "ANCASH",
+      "Provincia": "SANTA",
+      "Positivos": 898,
+      "GravesEsperados": 7.171014190455305,
+      "TasaEsperada": 7.985539187589427,
+      "Edad60Mas": 19.265033407572382
+    },
+    {
+      "Departamento": "JUNIN",
+      "Provincia": "HUANCAYO",
+      "Positivos": 614,
+      "GravesEsperados": 6.900006483194575,
+      "TasaEsperada": 11.237795575235465,
+      "Edad60Mas": 26.384364820846905
+    },
+    {
+      "Departamento": "LORETO",
+      "Provincia": "MAYNAS",
+      "Positivos": 500,
+      "GravesEsperados": 6.618305454267998,
+      "TasaEsperada": 13.236610908535996,
+      "Edad60Mas": 23.8
+    },
+    {
+      "Departamento": "LIMA",
+      "Provincia": "HUAURA",
+      "Positivos": 565,
+      "GravesEsperados": 6.207736452139436,
+      "TasaEsperada": 10.987144163078646,
+      "Edad60Mas": 25.84070796460177
+    },
+    {
+      "Departamento": "TACNA",
+      "Provincia": "TACNA",
+      "Positivos": 694,
+      "GravesEsperados": 6.173433073079603,
+      "TasaEsperada": 8.895436704725652,
+      "Edad60Mas": 23.487031700288185
+    },
+    {
+      "Departamento": "PIURA",
+      "Provincia": "SULLANA",
+      "Positivos": 418,
+      "GravesEsperados": 5.9121647603514935,
+      "TasaEsperada": 14.143934833376779,
+      "Edad60Mas": 23.444976076555022
+    },
+    {
+      "Departamento": "CUSCO",
+      "Provincia": "CUSCO",
+      "Positivos": 412,
+      "GravesEsperados": 4.714193318108069,
+      "TasaEsperada": 11.442216791524439,
+      "Edad60Mas": 34.22330097087379
+    },
+    {
+      "Departamento": "PIURA",
+      "Provincia": "TALARA",
+      "Positivos": 314,
+      "GravesEsperados": 4.135016414088106,
+      "TasaEsperada": 13.16884208308314,
+      "Edad60Mas": 20.063694267515924
+    }
+  ],
+  "impacto_departamentos": [
+    {
+      "Departamento": "LIMA",
+      "Provincia": "",
+      "Positivos": 29289,
+      "GravesEsperados": 361.3876446296964,
+      "TasaEsperada": 12.338681574300809,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "LAMBAYEQUE",
+      "Provincia": "",
+      "Positivos": 2680,
+      "GravesEsperados": 44.741138597548165,
+      "TasaEsperada": 16.694454700577676,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "AREQUIPA",
+      "Provincia": "",
+      "Positivos": 3206,
+      "GravesEsperados": 37.24000979781384,
+      "TasaEsperada": 11.615723580104131,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "PIURA",
+      "Provincia": "",
+      "Positivos": 2547,
+      "GravesEsperados": 34.54404299530125,
+      "TasaEsperada": 13.562639574126914,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "LA LIBERTAD",
+      "Provincia": "",
+      "Positivos": 1944,
+      "GravesEsperados": 33.05326749001423,
+      "TasaEsperada": 17.00270961420485,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "ICA",
+      "Provincia": "",
+      "Positivos": 1077,
+      "GravesEsperados": 18.458001621131903,
+      "TasaEsperada": 17.138348766139185,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "JUNIN",
+      "Provincia": "",
+      "Positivos": 1107,
+      "GravesEsperados": 12.112597224036275,
+      "TasaEsperada": 10.941822243935208,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "CALLAO",
+      "Provincia": "",
+      "Positivos": 1105,
+      "GravesEsperados": 11.683093109330446,
+      "TasaEsperada": 10.572934940570539,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "ANCASH",
+      "Provincia": "",
+      "Positivos": 1197,
+      "GravesEsperados": 10.055122169459082,
+      "TasaEsperada": 8.400269147417779,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "LORETO",
+      "Provincia": "",
+      "Positivos": 710,
+      "GravesEsperados": 8.65036848513728,
+      "TasaEsperada": 12.183617584700395,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "CUSCO",
+      "Provincia": "",
+      "Positivos": 560,
+      "GravesEsperados": 6.466353143093036,
+      "TasaEsperada": 11.547059184094707,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "TACNA",
+      "Provincia": "",
+      "Positivos": 728,
+      "GravesEsperados": 6.426128729924156,
+      "TasaEsperada": 8.827099903741972,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "PUNO",
+      "Provincia": "",
+      "Positivos": 422,
+      "GravesEsperados": 5.002160201634762,
+      "TasaEsperada": 11.853460193447305,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "SAN MARTIN",
+      "Provincia": "",
+      "Positivos": 390,
+      "GravesEsperados": 4.557945861472842,
+      "TasaEsperada": 11.687040670443185,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "CAJAMARCA",
+      "Provincia": "",
+      "Positivos": 479,
+      "GravesEsperados": 4.507803579211925,
+      "TasaEsperada": 9.41086342215433,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "HUANUCO",
+      "Provincia": "",
+      "Positivos": 434,
+      "GravesEsperados": 3.862487279365893,
+      "TasaEsperada": 8.899740275036619,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "AMAZONAS",
+      "Provincia": "",
+      "Positivos": 337,
+      "GravesEsperados": 3.249026617514247,
+      "TasaEsperada": 9.641028538617944,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "TUMBES",
+      "Provincia": "",
+      "Positivos": 397,
+      "GravesEsperados": 3.040835855856703,
+      "TasaEsperada": 7.659536160848118,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "MOQUEGUA",
+      "Provincia": "",
+      "Positivos": 473,
+      "GravesEsperados": 2.5792701905722435,
+      "TasaEsperada": 5.453002517066054,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "UCAYALI",
+      "Provincia": "",
+      "Positivos": 206,
+      "GravesEsperados": 1.6421334389763198,
+      "TasaEsperada": 7.971521548428737,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "AYACUCHO",
+      "Provincia": "",
+      "Positivos": 176,
+      "GravesEsperados": 1.5980903225641803,
+      "TasaEsperada": 9.080058650932843,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "APURIMAC",
+      "Provincia": "",
+      "Positivos": 142,
+      "GravesEsperados": 0.9862685766936068,
+      "TasaEsperada": 6.94555335699723,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "HUANCAVELICA",
+      "Provincia": "",
+      "Positivos": 150,
+      "GravesEsperados": 0.9680977395581178,
+      "TasaEsperada": 6.453984930387453,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "PASCO",
+      "Provincia": "",
+      "Positivos": 102,
+      "GravesEsperados": 0.9341186624428083,
+      "TasaEsperada": 9.158026102380473,
+      "Edad60Mas": 0
+    },
+    {
+      "Departamento": "MADRE DE DIOS",
+      "Provincia": "",
+      "Positivos": 120,
+      "GravesEsperados": 0.634798694907279,
+      "TasaEsperada": 5.289989124227325,
+      "Edad60Mas": 0
+    }
+  ],
+  "impacto_excluidos": 3383
+}

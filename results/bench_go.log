@@ -1,0 +1,10 @@
+goos: linux
+goarch: amd64
+pkg: github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/data
+cpu: Intel(R) Xeon(R) Processor @ 2.10GHz
+BenchmarkCargaConcurrente/workers=1-2         	       3	 834553093 ns/op
+BenchmarkCargaConcurrente/workers=2-2         	       3	 451426570 ns/op
+BenchmarkCargaConcurrente/workers=4-2         	       3	 413854879 ns/op
+BenchmarkCargaConcurrente/workers=8-2         	       3	 430880328 ns/op
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/data	8.450s
