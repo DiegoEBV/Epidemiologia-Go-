@@ -27,7 +27,7 @@ DEPTS = ["AMAZONAS", "ANCASH", "APURIMAC", "AREQUIPA", "AYACUCHO", "CAJAMARCA", 
 GRUPOS = ["0-17", "18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"]
 E = R["eda"]
 
-# 1. Serie mensual
+# 1. Serie mensual.
 meses = sorted(E["PorMes"].keys(), key=int)
 lab = [f"{m[4:6]}/{m[2:4]}" for m in meses]
 pos = [E["PorMes"][m][0] for m in meses]
@@ -50,7 +50,7 @@ ax.legend(h1 + h2, l1 + l2, loc="upper right", frameon=False)
 fig.savefig(f"{out}/eda_mensual.png")
 plt.close(fig)
 
-# 2. Letalidad por edad + distribución de edad
+# 2. Letalidad por edad + distribución de edad.
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(9, 3.2))
 tot = sum(E["PorEdad"][0])
 a1.bar(GRUPOS, [100 * v / tot for v in E["PorEdad"][0]], color=AZUL)
@@ -67,7 +67,7 @@ fig.tight_layout()
 fig.savefig(f"{out}/eda_edad.png")
 plt.close(fig)
 
-# 3. Letalidad por departamento
+# 3. Letalidad por departamento.
 orden = sorted(range(25), key=lambda i: E["LetalDept"][i])
 fig, ax = plt.subplots(figsize=(7, 5.5))
 ax.barh([DEPTS[i] for i in orden], [E["LetalDept"][i] for i in orden], color=AZUL)
@@ -76,7 +76,7 @@ ax.set_title("Letalidad por departamento")
 fig.savefig(f"{out}/eda_departamento.png")
 plt.close(fig)
 
-# 4. Limpieza
+# 4. Limpieza.
 fig, ax = plt.subplots(figsize=(7, 2.8))
 nombres = R["descarte_nombres"]
 vals = [sum(st["Descartes"][i] for st in R["limpieza"]) for i in range(len(nombres))]
@@ -89,7 +89,7 @@ ax.invert_yaxis()
 fig.savefig(f"{out}/limpieza.png")
 plt.close(fig)
 
-# 5. Benchmark de carga
+# 5. Benchmark de carga.
 bc = R["bench_carga"]
 labs = ["Secuencial"] + [f"{b['workers']} workers" for b in bc[1:]]
 fig, ax = plt.subplots(figsize=(7, 3))
@@ -103,7 +103,7 @@ ax.set_ylim(0, max(b["segundos"] for b in bc) * 1.3)
 fig.savefig(f"{out}/bench_carga.png")
 plt.close(fig)
 
-# 6. Benchmark de entrenamiento
+# 6. Benchmark de entrenamiento.
 bt = R["bench_train"]
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(9, 3))
 a1.bar([str(b["workers"]) for b in bt], [b["segundos"] for b in bt], color=AZUL)
@@ -121,7 +121,7 @@ fig.tight_layout()
 fig.savefig(f"{out}/bench_train.png")
 plt.close(fig)
 
-# 7. Curva de pérdida
+# 7. Curva de pérdida.
 h = R["historial"]
 fig, ax = plt.subplots(figsize=(5, 3))
 ax.plot([x["Epoca"] for x in h], [x["Perdida"] for x in h], "o-", color=AZUL)
@@ -131,7 +131,7 @@ ax.set_title("Convergencia del entrenamiento")
 fig.savefig(f"{out}/perdida.png")
 plt.close(fig)
 
-# 8. Impacto
+# 8. Impacto.
 imp = R["impacto_top"][:10][::-1]
 fig, ax = plt.subplots(figsize=(7, 3.6))
 ax.barh([f"{r['Provincia'].title()} ({r['Departamento'].title()})" for r in imp],
@@ -142,7 +142,7 @@ fig.savefig(f"{out}/impacto.png")
 plt.close(fig)
 
 
-# 9 y 10. Diagramas de arquitectura
+# 9 y 10. Diagramas de arquitectura.
 def caja(ax, x, y, w, hgt, txt, color, fs=8.5):
     ax.add_patch(FancyBboxPatch((x, y), w, hgt, boxstyle="round,pad=0.02", fc=color, ec="#333", lw=1))
     ax.text(x + w / 2, y + hgt / 2, txt, ha="center", va="center", fontsize=fs)
