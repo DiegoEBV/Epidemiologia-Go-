@@ -1,0 +1,118 @@
+# TF CC65 · Caso 1 · PC4: clúster de nodos ML + API coordinadora + MongoDB + Redis.
+#
+#   docker compose up --build -d
+#   docker compose logs -f api
+#   http://localhost:8080/swagger/
+#
+# Topología (estrella, dos redes aisladas):
+#
+#              publica :8080
+#   cliente ──────────────► api (coordinador)
+#                            │  │
+#        red "cluster" (TCP) │  │ red "datos"
+#        ┌──────┬──────┬─────┘  └──────┬────────┐
+#      node1  node2  node3  node4    mongo     redis
+#
+# Los nodos solo ven a la API (no tienen salida a Internet ni acceso a las bases).
+# Cada nodo se limita a 1 CPU para simular una máquina independiente.
+
+name: epidemiologia-go
+
+x-nodo: &nodo
+  build:
+    context: .
+    target: node
+  image: epidemiologia-go/node:pc4
+  restart: unless-stopped
+  networks: [cluster]
+  expose: ["9000"]
+  environment: &nodo-env
+    GOMAXPROCS: "1"
+  cpus: 1.0
+  mem_limit: 512m
+
+services:
+  node1:
+    <<: *nodo
+    hostname: node1
+    environment: {<<: *nodo-env, NODE_ID: node1}
+  node2:
+    <<: *nodo
+    hostname: node2
+    environment: {<<: *nodo-env, NODE_ID: node2}
+  node3:
+    <<: *nodo
+    hostname: node3
+    environment: {<<: *nodo-env, NODE_ID: node3}
+  node4:
+    <<: *nodo
+    hostname: node4
+    environment: {<<: *nodo-env, NODE_ID: node4}
+
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    networks: [datos]
+    # Sin puertos publicados: la red "datos" es interna. Inspección con
+    #   docker compose exec mongo mongosh epidemiologia
+    volumes: [mongo-data:/data/db]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru", "--save", ""]
+    networks: [datos]
+    # Inspección: docker compose exec redis redis-cli
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      target: api
+    image: epidemiologia-go/api:pc4
+    restart: unless-stopped
+    depends_on:
+      mongo: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      node1: {condition: service_started}
+      node2: {condition: service_started}
+      node3: {condition: service_started}
+      node4: {condition: service_started}
+    networks: [publica, cluster, datos]
+    ports: ["8080:8080"]
+    volumes: ["./data:/data:ro"]
+    mem_limit: 2g
+    environment:
+      PORT: "8080"
+      DATA_DIR: /data
+      NODES: node1:9000,node2:9000,node3:9000,node4:9000
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: epidemiologia
+      REDIS_ADDR: redis:6379
+      JWT_SECRET: ${JWT_SECRET:-cc65-tf-caso1-secreto-demo}
+      ADMIN_USER: admin
+      ADMIN_PASS: ${ADMIN_PASS:-admin123}
+      ANALISTA_USER: analista
+      ANALISTA_PASS: ${ANALISTA_PASS:-analista123}
+      EPOCAS: "6"
+      MESES_IMPACTO: "4"
+      FORCE_TRAIN: ${FORCE_TRAIN:-false}
+
+networks:
+  publica: {}
+  cluster:
+    internal: true
+  datos:
+    internal: true
+
+volumes:
+  mongo-data: {}

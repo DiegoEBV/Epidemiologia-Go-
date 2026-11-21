@@ -1,0 +1,136 @@
+{
+  "fecha": "2026-11-21T17:13:21",
+  "epocas": 6,
+  "resultados": [
+    {
+      "nodos": 1,
+      "entrenamiento_s": 6.082638967,
+      "distribucion_s": 0.594087785,
+      "total_trabajo_s": 7.145310621,
+      "pasos_epoca": 234,
+      "lote_local": 16384,
+      "auc": 0.9025314052757016,
+      "perdida_final": 0.39713329609742765,
+      "modelo_version": 3,
+      "detalle_nodos": [
+        {
+          "id": "node1",
+          "worker": 0,
+          "registros": 3843178,
+          "envio_ms": 594.064,
+          "carga_ms": 239.646
+        }
+      ],
+      "speedup": 1.0,
+      "eficiencia": 1.0
+    },
+    {
+      "nodos": 2,
+      "entrenamiento_s": 3.074004829,
+      "distribucion_s": 0.281490915,
+      "total_trabajo_s": 3.779451645,
+      "pasos_epoca": 234,
+      "lote_local": 8192,
+      "auc": 0.9025389721190888,
+      "perdida_final": 0.3970935493146497,
+      "modelo_version": 4,
+      "detalle_nodos": [
+        {
+          "id": "node1",
+          "worker": 0,
+          "registros": 1921589,
+          "envio_ms": 212.741,
+          "carga_ms": 57.663
+        },
+        {
+          "id": "node2",
+          "worker": 1,
+          "registros": 1921589,
+          "envio_ms": 281.47,
+          "carga_ms": 128.757
+        }
+      ],
+      "speedup": 1.9787343564384492,
+      "eficiencia": 0.9893671782192246
+    },
+    {
+      "nodos": 3,
+      "entrenamiento_s": 2.345798154,
+      "distribucion_s": 0.211988526,
+      "total_trabajo_s": 2.994722614,
+      "pasos_epoca": 234,
+      "lote_local": 5461,
+      "auc": 0.9025285776492513,
+      "perdida_final": 0.39717033821100944,
+      "modelo_version": 5,
+      "detalle_nodos": [
+        {
+          "id": "node1",
+          "worker": 0,
+          "registros": 1281059,
+          "envio_ms": 165.846,
+          "carga_ms": 33.437
+        },
+        {
+          "id": "node2",
+          "worker": 1,
+          "registros": 1281059,
+          "envio_ms": 190.088,
+          "carga_ms": 38.306
+        },
+        {
+          "id": "node3",
+          "worker": 2,
+          "registros": 1281060,
+          "envio_ms": 211.953,
+          "carga_ms": 103.976
+        }
+      ],
+      "speedup": 2.5929933300646635,
+      "eficiencia": 0.8643311100215545
+    },
+    {
+      "nodos": 4,
+      "entrenamiento_s": 1.873839522,
+      "distribucion_s": 0.190115867,
+      "total_trabajo_s": 2.538782177,
+      "pasos_epoca": 234,
+      "lote_local": 4096,
+      "auc": 0.9025236294453585,
+      "perdida_final": 0.3971338498313046,
+      "modelo_version": 6,
+      "detalle_nodos": [
+        {
+          "id": "node1",
+          "worker": 0,
+          "registros": 960794,
+          "envio_ms": 151.685,
+          "carga_ms": 39.328
+        },
+        {
+          "id": "node2",
+          "worker": 1,
+          "registros": 960794,
+          "envio_ms": 164.164,
+          "carga_ms": 49.532
+        },
+        {
+          "id": "node3",
+          "worker": 2,
+          "registros": 960794,
+          "envio_ms": 148.147,
+          "carga_ms": 27.602
+        },
+        {
+          "id": "node4",
+          "worker": 3,
+          "registros": 960796,
+          "envio_ms": 190.036,
+          "carga_ms": 88.095
+        }
+      ],
+      "speedup": 3.2460831867329993,
+      "eficiencia": 0.8115207966832498
+    }
+  ]
+}

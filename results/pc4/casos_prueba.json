@@ -1,0 +1,359 @@
+[
+  {
+    "caso": "Adulto mayor, Lima, ola 2",
+    "entrada": {
+      "edad": 72,
+      "sexo": "M",
+      "departamento": "LIMA",
+      "provincia": "LIMA",
+      "fecha": "2021-04-15"
+    },
+    "status": 200,
+    "respuesta": {
+      "entrada": {
+        "edad": 72,
+        "sexo": "M",
+        "departamento": "LIMA",
+        "provincia": "LIMA",
+        "fecha": "2021-04-15"
+      },
+      "probabilidad_clasificador": 0.9095113141309122,
+      "clasificacion": "ALTO RIESGO",
+      "letalidad_estimada": 0.48479625532932086,
+      "letalidad_estimada_pct": "48.48%",
+      "nivel_riesgo": "MUY ALTO",
+      "periodo_epidemiologico": "Ola 2 (dic20-oct21)",
+      "factores": [
+        {
+          "variable": "edad",
+          "valor": "72",
+          "aporte_logit": 2.54002253314368
+        },
+        {
+          "variable": "sexo",
+          "valor": "M",
+          "aporte_logit": 0.543444665570834
+        },
+        {
+          "variable": "departamento",
+          "valor": "LIMA",
+          "aporte_logit": -0.0740365340794137
+        },
+        {
+          "variable": "periodo",
+          "valor": "Ola 2 (dic20-oct21)",
+          "aporte_logit": 0.8371226146472286
+        }
+      ],
+      "recomendacion": "Prioridad máxima: reservar cama hospitalaria/UCI y oxígeno medicinal.",
+      "modelo_version": 7,
+      "cache": true,
+      "latencia_ms": 0.163
+    },
+    "latencia_cliente_ms": 1.04,
+    "x_response_time": "0.220ms"
+  },
+  {
+    "caso": "Mujer de 85 años, Piura, post-olas",
+    "entrada": {
+      "edad": 85,
+      "sexo": "F",
+      "departamento": "PIURA",
+      "fecha": "2023-08-10"
+    },
+    "status": 200,
+    "respuesta": {
+      "entrada": {
+        "edad": 85,
+        "sexo": "F",
+        "departamento": "PIURA",
+        "fecha": "2023-08-10"
+      },
+      "probabilidad_clasificador": 0.7113863152885377,
+      "clasificacion": "ALTO RIESGO",
+      "letalidad_estimada": 0.11888690437915456,
+      "letalidad_estimada_pct": "11.89%",
+      "nivel_riesgo": "ALTO",
+      "periodo_epidemiologico": "Post-olas (may22+)",
+      "factores": [
+        {
+          "variable": "edad",
+          "valor": "85",
+          "aporte_logit": 3.778747108443786
+        },
+        {
+          "variable": "sexo",
+          "valor": "F",
+          "aporte_logit": 0
+        },
+        {
+          "variable": "departamento",
+          "valor": "PIURA",
+          "aporte_logit": 0.3660910064833739
+        },
+        {
+          "variable": "periodo",
+          "valor": "Post-olas (may22+)",
+          "aporte_logit": -1.7038408883719487
+        }
+      ],
+      "recomendacion": "Priorizar evaluación presencial y prever disponibilidad de oxígeno.",
+      "modelo_version": 7,
+      "cache": true,
+      "latencia_ms": 0.169
+    },
+    "latencia_cliente_ms": 1.0,
+    "x_response_time": "0.216ms"
+  },
+  {
+    "caso": "Varón de 60 años, Loreto, ola 1",
+    "entrada": {
+      "edad": 60,
+      "sexo": "M",
+      "departamento": "LORETO",
+      "fecha": "2020-06-01"
+    },
+    "status": 200,
+    "respuesta": {
+      "entrada": {
+        "edad": 60,
+        "sexo": "M",
+        "departamento": "LORETO",
+        "fecha": "2020-06-01"
+      },
+      "probabilidad_clasificador": 0.8107103864051356,
+      "clasificacion": "ALTO RIESGO",
+      "letalidad_estimada": 0.2065781501503139,
+      "letalidad_estimada_pct": "20.66%",
+      "nivel_riesgo": "MUY ALTO",
+      "periodo_epidemiologico": "Ola 1 (2020)",
+      "factores": [
+        {
+          "variable": "edad",
+          "valor": "60",
+          "aporte_logit": 1.471223863395468
+        },
+        {
+          "variable": "sexo",
+          "valor": "M",
+          "aporte_logit": 0.543444665570834
+        },
+        {
+          "variable": "departamento",
+          "valor": "LORETO",
+          "aporte_logit": 0.16827884641891727
+        },
+        {
+          "variable": "periodo",
+          "valor": "Ola 1 (2020)",
+          "aporte_logit": 0.8105559852251717
+        }
+      ],
+      "recomendacion": "Prioridad máxima: reservar cama hospitalaria/UCI y oxígeno medicinal.",
+      "modelo_version": 7,
+      "cache": true,
+      "latencia_ms": 0.16
+    },
+    "latencia_cliente_ms": 0.92,
+    "x_response_time": "0.201ms"
+  },
+  {
+    "caso": "Varón de 45 años, Arequipa, Ómicron",
+    "entrada": {
+      "edad": 45,
+      "sexo": "M",
+      "departamento": "AREQUIPA",
+      "fecha": "2022-01-20"
+    },
+    "status": 200,
+    "respuesta": {
+      "entrada": {
+        "edad": 45,
+        "sexo": "M",
+        "departamento": "AREQUIPA",
+        "fecha": "2022-01-20"
+      },
+      "probabilidad_clasificador": 0.07749249580017459,
+      "clasificacion": "BAJO RIESGO",
+      "letalidad_estimada": 0.004051680326004062,
+      "letalidad_estimada_pct": "0.41%",
+      "nivel_riesgo": "BAJO",
+      "periodo_epidemiologico": "Ola 3 Ómicron (nov21-abr22)",
+      "factores": [
+        {
+          "variable": "edad",
+          "valor": "45",
+          "aporte_logit": 0.2359887158856345
+        },
+        {
+          "variable": "sexo",
+          "valor": "M",
+          "aporte_logit": 0.543444665570834
+        },
+        {
+          "variable": "departamento",
+          "valor": "AREQUIPA",
+          "aporte_logit": -0.24902809873544923
+        },
+        {
+          "variable": "periodo",
+          "valor": "Ola 3 Ómicron (nov21-abr22)",
+          "aporte_logit": -1.4684490236254395
+        }
+      ],
+      "recomendacion": "Seguimiento ambulatorio estándar.",
+      "modelo_version": 7,
+      "cache": true,
+      "latencia_ms": 0.124
+    },
+    "latencia_cliente_ms": 0.84,
+    "x_response_time": "0.160ms"
+  },
+  {
+    "caso": "Mujer de 24 años, Cusco, post-olas",
+    "entrada": {
+      "edad": 24,
+      "sexo": "F",
+      "departamento": "CUSCO",
+      "fecha": "2023-06-01"
+    },
+    "status": 200,
+    "respuesta": {
+      "entrada": {
+        "edad": 24,
+        "sexo": "F",
+        "departamento": "CUSCO",
+        "fecha": "2023-06-01"
+      },
+      "probabilidad_clasificador": 0.007724882208462948,
+      "clasificacion": "BAJO RIESGO",
+      "letalidad_estimada": 0.00037549589755144576,
+      "letalidad_estimada_pct": "0.04%",
+      "nivel_riesgo": "BAJO",
+      "periodo_epidemiologico": "Post-olas (may22+)",
+      "factores": [
+        {
+          "variable": "edad",
+          "valor": "24",
+          "aporte_logit": -1.3052492032339944
+        },
+        {
+          "variable": "sexo",
+          "valor": "F",
+          "aporte_logit": 0
+        },
+        {
+          "variable": "departamento",
+          "valor": "CUSCO",
+          "aporte_logit": -0.30759307281468934
+        },
+        {
+          "variable": "periodo",
+          "valor": "Post-olas (may22+)",
+          "aporte_logit": -1.7038408883719487
+        }
+      ],
+      "recomendacion": "Seguimiento ambulatorio estándar.",
+      "modelo_version": 7,
+      "cache": true,
+      "latencia_ms": 0.207
+    },
+    "latencia_cliente_ms": 1.16,
+    "x_response_time": "0.278ms"
+  },
+  {
+    "caso": "Niña de 8 años, Puno, sin fecha",
+    "entrada": {
+      "edad": 8,
+      "sexo": "F",
+      "departamento": "PUNO"
+    },
+    "status": 200,
+    "respuesta": {
+      "entrada": {
+        "edad": 8,
+        "sexo": "F",
+        "departamento": "PUNO"
+      },
+      "probabilidad_clasificador": 0.005110545218439019,
+      "clasificacion": "BAJO RIESGO",
+      "letalidad_estimada": 0.0002477637921337145,
+      "letalidad_estimada_pct": "0.02%",
+      "nivel_riesgo": "BAJO",
+      "periodo_epidemiologico": "Post-olas (may22+)",
+      "factores": [
+        {
+          "variable": "edad",
+          "valor": "8",
+          "aporte_logit": -2.332237297513858
+        },
+        {
+          "variable": "sexo",
+          "valor": "F",
+          "aporte_logit": 0
+        },
+        {
+          "variable": "departamento",
+          "valor": "PUNO",
+          "aporte_logit": 0.30362331683792715
+        },
+        {
+          "variable": "periodo",
+          "valor": "Post-olas (may22+)",
+          "aporte_logit": -1.7038408883719487
+        }
+      ],
+      "recomendacion": "Seguimiento ambulatorio estándar.",
+      "modelo_version": 7,
+      "cache": true,
+      "latencia_ms": 0.166
+    },
+    "latencia_cliente_ms": 1.0,
+    "x_response_time": "0.210ms"
+  },
+  {
+    "caso": "Edad fuera de rango",
+    "entrada": {
+      "edad": 150,
+      "sexo": "M",
+      "departamento": "LIMA"
+    },
+    "status": 400,
+    "respuesta": {
+      "error": "edad debe estar entre 0 y 110",
+      "status": 400
+    },
+    "latencia_cliente_ms": 0.98,
+    "x_response_time": "0.074ms"
+  },
+  {
+    "caso": "Departamento inexistente",
+    "entrada": {
+      "edad": 40,
+      "sexo": "F",
+      "departamento": "ATLANTIDA"
+    },
+    "status": 400,
+    "respuesta": {
+      "error": "departamento desconocido: ATLANTIDA",
+      "status": 400
+    },
+    "latencia_cliente_ms": 0.75,
+    "x_response_time": "0.056ms"
+  },
+  {
+    "caso": "Sexo inválido",
+    "entrada": {
+      "edad": 40,
+      "sexo": "X",
+      "departamento": "LIMA"
+    },
+    "status": 400,
+    "respuesta": {
+      "error": "sexo debe ser M o F",
+      "status": 400
+    },
+    "latencia_cliente_ms": 0.88,
+    "x_response_time": "0.066ms"
+  }
+]

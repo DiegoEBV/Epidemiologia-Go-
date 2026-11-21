@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><style>body{margin:0;background:#fff;font-family:Arial}
+.t{position:absolute;border:1.5px solid #1f5fa8;border-radius:7px;background:#fff;font-size:12px;width:250px}
+.t h{display:block;background:#1f5fa8;color:#fff;font-weight:bold;padding:6px 9px;border-radius:5px 5px 0 0;font-size:13px}
+.t div{padding:2px 9px;border-bottom:1px solid #eee;font-family:'DejaVu Sans Mono',monospace;font-size:11.2px}
+.t div b{color:#c0392b} .r h{background:#c0392b} .r{border-color:#c0392b} i{color:#888;font-style:normal}
+</style><div style="position:relative;width:1200px;height:760px">
+<svg width="1200" height="760" style="position:absolute;left:0;top:0" font-family="Arial" font-size="11.5" fill="#555">
+<g stroke="#777" stroke-width="1.5" fill="none"><path d="M270,110 L330,110"/><path d="M600,110 L650,110"/><path d="M460,250 L460,330"/><path d="M780,250 L780,330"/><path d="M272,140 C305,140 300,380 338,380"/></g>
+<text x="276" y="102">1 : N</text><text x="603" y="102">1 : 1</text><text x="466" y="295">1 : N</text><text x="786" y="295">1 : N</text><text x="300" y="300">1 : N</text></svg>
+<div class="t" style="left:20px;top:20px"><h>usuarios</h><div><b>_id</b> ObjectId</div><div>username <i>string UNIQUE</i></div><div>pass_hash <i>PBKDF2-SHA256</i></div><div>salt · iter</div><div>rol <i>admin | analista</i></div><div>creado <i>date</i></div></div>
+<div class="t" style="left:340px;top:20px"><h>entrenamientos</h><div><b>_id</b> string (fecha-aleatorio)</div><div>estado <i>en_cola…completado|error</i></div><div>solicitante <i>→ usuarios.username</i></div><div>config {workers, epocas, lote…}</div><div>historial [{epoca, perdida, s}]</div><div>distribucion {nodos[], lote_local}</div><div>modelo_version <i>→ modelos._id</i></div><div>metricas · duracion_s · error</div></div>
+<div class="t" style="left:660px;top:20px"><h>modelos</h><div><b>_id</b> int (versión)</div><div>activo <i>bool (índice)</i></div><div>trabajo_id <i>→ entrenamientos</i></div><div>w [32] · b · normalizacion</div><div>pesos {nombre: valor}</div><div>metricas {AUC, recall, …}</div><div>historial · distribucion</div><div>n_train · n_test · huella_datos</div></div>
+<div class="t" style="left:340px;top:335px"><h>predicciones</h><div><b>_id</b> ObjectId</div><div>ts <i>date (índice desc)</i></div><div>usuario <i>→ usuarios</i></div><div>entrada {edad, sexo, departamento,</div><div>&nbsp; provincia, fecha}</div><div>probabilidad · letalidad · nivel</div><div>modelo_version <i>→ modelos</i></div><div>latencia_us · cache</div></div>
+<div class="t" style="left:660px;top:335px"><h>impacto_provincias</h><div><b>_id</b> "v{n}|DEPT|PROV"</div><div>modelo_version <i>→ modelos</i></div><div>ranking <i>(índice compuesto)</i></div><div>departamento · provincia</div><div>positivos · graves_esperados</div><div>tasa_por_1000 · pct_mayores_60</div><div>mes_desde</div></div>
+<div class="t" style="left:20px;top:335px"><h>metricas_cluster</h><div>ts <i>date · TTL 24 h</i></div><div>nodo <i>node1..node4</i></div><div>conectado · rtt_ms</div><div>cpu_pct · heap_mb</div><div>registros · pasos</div></div>
+<div class="t" style="left:20px;top:560px"><h>dataset_resumen</h><div><b>_id</b> "actual"</div><div>limpieza [{fuente, leidas, …}]</div><div>positivos · fallecidos</div><div>letalidad_por_edad {}</div><div>n_train · n_test · huella</div></div>
+<div class="t r" style="left:940px;top:20px;width:240px"><h>Redis (claves)</h><div>modelo:activo <i>JSON</i></div><div>pred:v{v}:{edad}:{sexo}:</div><div>&nbsp; {dept}:{ola} <i>TTL 1 h</i></div><div>impacto:v{v}:{dept}:{n} <i>10 min</i></div><div>cluster:nodo:{id} <i>TTL 15 s</i></div><div>stats:predicciones <i>INCRBY</i></div><div>canal "eventos" <i>pub/sub</i></div></div>
+</div>

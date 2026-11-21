@@ -1,0 +1,9 @@
+.git
+data
+**/*.csv
+results
+informe
+postman
+scripts
+*.test
+bin

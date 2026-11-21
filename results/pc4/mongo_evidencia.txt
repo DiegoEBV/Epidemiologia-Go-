@@ -1,0 +1,280 @@
+== Colecciones y número de documentos ==
+dataset_resumen        1
+entrenamientos         7
+impacto_provincias     1267
+metricas_cluster       628
+modelos                7
+predicciones           274874
+usuarios               2
+
+== usuarios ==
+[
+  {
+    _id: ObjectId('6b0216b5fcd8c77773c047ec'),
+    username: 'admin',
+    creado: ISODate('2026-11-21T22:09:57.212Z'),
+    iter: 60000,
+    rol: 'admin'
+  },
+  {
+    _id: ObjectId('6b0216b5fcd8c77773c047ee'),
+    username: 'analista',
+    creado: ISODate('2026-11-21T22:09:57.259Z'),
+    iter: 60000,
+    rol: 'analista'
+  }
+]
+
+== modelos (versión activa; sin w, pesos ni historial) ==
+{
+  _id: 7,
+  creado: ISODate('2026-11-21T22:14:55.733Z'),
+  algoritmo: 'Regresión logística distribuida (Parameter Server síncrono sobre TCP)',
+  activo: true,
+  trabajo_id: '20261121-221444-8578f4eaafb5',
+  config: {
+    workers: 4,
+    epocas: 20,
+    loteglobal: 16384,
+    tasaaprend: 0.8,
+    decaimiento: 0.5,
+    l2: 0.00001,
+    semilla: Long('42')
+  },
+  b: -1.5388706663248466,
+  normalizacion: {
+    mediaedad: 41.96917941349581,
+    desvedad: 18.431049481355775,
+    pesopos: 20.732638162396302
+  },
+  metricas: {
+    n: 960272,
+    tp: 37708,
+    fp: 171452,
+    tn: 744746,
+    fn: 6366,
+    accuracy: 0.8148253828082044,
+    precision: 0.18028303690954292,
+    recall: 0.8555611017833643,
+    f1: 0.29781151030272396,
+    especificidad: 0.8128657779213664,
+    auc: 0.9026151034990632,
+    accuracybaseline: 0.95410258760018
+  },
+  distribucion: {
+    lote_local: 4096,
+    pasos_epoca: 234,
+    distribucion_s: 0.258641506,
+    normalizacion: {
+      mediaedad: 41.96917941349581,
+      desvedad: 18.431049481355775,
+      pesopos: 20.732638162396302
+    }
+  },
+  duracion_s: 10.51632754,
+  n_train: 3843178,
+  n_test: 960272,
+  huella_datos: 'positivos_covid.csv:311781828:1795295514;fallecidos_covid.csv:20488723:1795295516;'
+}
+
+== entrenamientos (último; 2 épocas del historial) ==
+[
+  {
+    _id: '20261121-221444-8578f4eaafb5',
+    estado: 'completado',
+    solicitante: 'admin',
+    config: {
+      workers: 4,
+      epocas: 20,
+      loteglobal: 16384,
+      tasaaprend: 0.8,
+      decaimiento: 0.5,
+      l2: 0.00001,
+      semilla: Long('42')
+    },
+    nodos_solicitados: 4,
+    creado: ISODate('2026-11-21T22:14:44.503Z'),
+    inicio: ISODate('2026-11-21T22:14:44.503Z'),
+    fin: ISODate('2026-11-21T22:14:56.824Z'),
+    historial: [
+      {
+        epoca: 1,
+        perdida: 0.41108196910325345,
+        duracion_s: 0.772549378
+      },
+      {
+        epoca: 2,
+        perdida: 0.3976550390735239,
+        duracion_s: 0.806638582
+      }
+    ],
+    distribucion: {
+      nodos: [
+        {
+          id: 'node1',
+          worker: 0,
+          registros: 960794,
+          envio_ms: 249.674,
+          carga_ms: 83.597
+        },
+        {
+          id: 'node2',
+          worker: 1,
+          registros: 960794,
+          envio_ms: 244.819,
+          carga_ms: 99.897
+        },
+        {
+          id: 'node3',
+          worker: 2,
+          registros: 960794,
+          envio_ms: 256.876,
+          carga_ms: 66.783
+        },
+        {
+          id: 'node4',
+          worker: 3,
+          registros: 960796,
+          envio_ms: 215.643,
+          carga_ms: 90.225
+        }
+      ],
+      lote_local: 4096,
+      pasos_epoca: 234,
+      distribucion_s: 0.258641506
+    },
+    modelo_version: 7,
+    duracion_s: 12.320640024
+  }
+]
+
+== predicciones (2 últimas) ==
+[
+  {
+    _id: ObjectId('6b021ca9aeec64d598d44fa4'),
+    ts: ISODate('2026-11-21T22:35:21.068Z'),
+    usuario: 'admin',
+    entrada: {
+      edad: 8,
+      sexo: 'F',
+      departamento: 'PUNO'
+    },
+    probabilidad: 0.005110545218439019,
+    letalidad: 0.0002477637921337145,
+    nivel: 'BAJO',
+    modelo_version: 7,
+    latencia_us: Long('166'),
+    cache: true
+  },
+  {
+    _id: ObjectId('6b021ca9aeec64d598d44fa3'),
+    ts: ISODate('2026-11-21T22:35:21.067Z'),
+    usuario: 'admin',
+    entrada: {
+      edad: 8,
+      sexo: 'F',
+      departamento: 'PUNO'
+    },
+    probabilidad: 0.005110545218439019,
+    letalidad: 0.0002477637921337145,
+    nivel: 'BAJO',
+    modelo_version: 7,
+    latencia_us: Long('184'),
+    cache: true
+  }
+]
+
+== impacto_provincias (top 3 del modelo activo) ==
+[
+  {
+    _id: 'v7|LIMA|LIMA',
+    modelo_version: 7,
+    ranking: 1,
+    departamento: 'LIMA',
+    provincia: 'LIMA',
+    positivos: 28086,
+    graves_esperados: 359.2235218860172,
+    tasa_por_1000: 12.79012753279275,
+    pct_mayores_60: 27.640105390586058,
+    mes_desde: 202312
+  },
+  {
+    _id: 'v7|LAMBAYEQUE|CHICLAYO',
+    modelo_version: 7,
+    ranking: 2,
+    departamento: 'LAMBAYEQUE',
+    provincia: 'CHICLAYO',
+    positivos: 2333,
+    graves_esperados: 43.18772930628123,
+    tasa_por_1000: 18.51167137003053,
+    pct_mayores_60: 28.846978139734247,
+    mes_desde: 202312
+  },
+  {
+    _id: 'v7|AREQUIPA|AREQUIPA',
+    modelo_version: 7,
+    ranking: 3,
+    departamento: 'AREQUIPA',
+    provincia: 'AREQUIPA',
+    positivos: 2984,
+    graves_esperados: 35.38525911595021,
+    tasa_por_1000: 11.858330802932377,
+    pct_mayores_60: 29.524128686327078,
+    mes_desde: 202312
+  }
+]
+
+== metricas_cluster (2 últimas) ==
+[
+  {
+    _id: ObjectId('6b021cd7aeec64d598d44fb8'),
+    ts: ISODate('2026-11-21T22:36:07.266Z'),
+    nodo: 'node4',
+    conectado: true,
+    rtt_ms: 0.245,
+    cpu_pct: 0.024243846414781077,
+    heap_mb: 33.262237548828125,
+    registros: 960796,
+    pasos: Long('8892')
+  },
+  {
+    _id: ObjectId('6b021cd7aeec64d598d44fb7'),
+    ts: ISODate('2026-11-21T22:36:07.266Z'),
+    nodo: 'node3',
+    conectado: true,
+    rtt_ms: 0.19,
+    cpu_pct: 0.01619616063533675,
+    heap_mb: 33.262237548828125,
+    registros: 960794,
+    pasos: Long('10296')
+  }
+]
+
+== dataset_resumen ==
+{
+  _id: 'actual',
+  cargado: ISODate('2026-11-21T22:10:07.586Z'),
+  huella: 'positivos_covid.csv:311781828:1795295514;fallecidos_covid.csv:20488723:1795295516;',
+  archivos: [
+    'positivos_covid.csv',
+    'fallecidos_covid.csv'
+  ],
+  positivos: 4582537,
+  fallecidos: 220913,
+  letalidad_global: 0.0482075758471781,
+  provincias: 225,
+  n_train: 3843178,
+  n_test: 960272,
+  impacto_mes_desde: 202312,
+  letalidad_por_edad: {
+    '60-69': 13.19368932038835,
+    '70-79': 25.207422950314744,
+    '80+': 44.45828961175236,
+    '0-17': 0.5033046652470894,
+    '18-29': 0.3051286947607514,
+    '30-39': 0.7228467987804879,
+    '40-49': 2.160410764872521,
+    '50-59': 5.660844054391694
+  },
+  carga_s: 10.322283574
+}

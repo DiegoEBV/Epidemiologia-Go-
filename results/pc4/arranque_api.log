@@ -1,0 +1,12 @@
+[api] 22:10:07.586770 datos: 4803450 registros (4582537 positivos, 220913 fallecidos) en 10.32s · train 3843178 · test 960272
+[api] 22:10:10.885610 estado del coordinador: entrenando
+[api] 22:10:10.889760 entrenamiento 20261121-221010-b09b0b4e6634: 4 nodos, 6 épocas, lote global 16384
+[api] 22:10:11.518725   época 1/6  pérdida 0.41108  (0.29s)
+[api] 22:10:11.818862   época 2/6  pérdida 0.39766  (0.30s)
+[api] 22:10:12.103492   época 3/6  pérdida 0.39737  (0.28s)
+[api] 22:10:12.407619   época 4/6  pérdida 0.39729  (0.30s)
+[api] 22:10:12.697065   época 5/6  pérdida 0.39719  (0.29s)
+[api] 22:10:13.005649   época 6/6  pérdida 0.39713  (0.31s)
+[api] 22:10:13.274438 impacto: 181 provincias puntuadas en el clúster en 19 ms (3383 casos sin provincia excluidos)
+[api] 22:10:13.279022 entrenamiento 20261121-221010-b09b0b4e6634 completado: modelo v1 · AUC 0.9025 · 2.39s (distribución 0.19s)
+[api] 22:10:13.279797 estado del coordinador: listo

@@ -1,0 +1,14 @@
+nodos=1: trabajo 20261121-221303-e5635197c9ba
+  entrenamiento 6.08s · distribución 0.59s · AUC 0.9025
+nodos=2: trabajo 20261121-221311-08acbfb8e17e
+  entrenamiento 3.07s · distribución 0.28s · AUC 0.9025
+nodos=3: trabajo 20261121-221315-da63c94de4cd
+  entrenamiento 2.35s · distribución 0.21s · AUC 0.9025
+nodos=4: trabajo 20261121-221318-e1799dcc5976
+  entrenamiento 1.87s · distribución 0.19s · AUC 0.9025
+
+nodos  train s  speedup  efic.     AUC
+    1     6.08     1.00   100%  0.9025
+    2     3.07     1.98    99%  0.9025
+    3     2.35     2.59    86%  0.9025
+    4     1.87     3.25    81%  0.9025

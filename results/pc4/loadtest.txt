@@ -1,0 +1,9 @@
+2026/11/21 17:14:16 carga: 32 clientes durante 20s contra http://localhost:8080
+
+ruta                              req    err    req/s   p50 ms   p95 ms   p99 ms   max ms    <100ms
+TOTAL                          265382      0    13268     2.06     4.75     8.67    31.76   100.00%
+POST /api/predicciones         212369      0    10618     2.13     4.84     8.79    31.76   100.00%
+GET /api/impacto                26560      0     1328     2.21     4.88     8.90    23.37   100.00%
+GET /api/cluster                26453      0     1323     1.31     3.32     6.96    24.25   100.00%
+
+Resultados guardados en results/pc4/latencia.json

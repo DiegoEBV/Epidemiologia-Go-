@@ -1,0 +1,10 @@
+[node1] 22:08:49.207510 CPUs 8 · GOMAXPROCS 1 · go1.24.13
+[node1] 22:08:49.207553 nodo node1 escuchando en [::]:9000
+[node1] 22:09:57.262714 coordinador conectado desde 172.18.0.6:40416
+[node1] 22:10:11.200957 trabajo 20261121-221010-b09b0b4e6634: fragmento worker=0 con 960794 registros (lote local 4096) en 67.2 ms
+[node1] 22:13:16.068112 trabajo 20261121-221315-da63c94de4cd: fragmento worker=0 con 1281059 registros (lote local 5461) en 33.4 ms
+[node1] 22:13:18.718678 impacto: 12495 casos puntuados en 1.4 ms
+[node1] 22:13:19.086577 trabajo 20261121-221318-e1799dcc5976: fragmento worker=0 con 960794 registros (lote local 4096) en 39.3 ms
+[node1] 22:13:21.273945 impacto: 12495 casos puntuados en 1.0 ms
+[node1] 22:14:44.978633 trabajo 20261121-221444-8578f4eaafb5: fragmento worker=0 con 960794 registros (lote local 4096) en 83.6 ms
+[node1] 22:14:55.752954 impacto: 12495 casos puntuados en 1.7 ms

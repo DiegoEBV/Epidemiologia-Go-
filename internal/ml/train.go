@@ -65,24 +65,14 @@ func worker(id int, recs []data.Record, shard []int32, loteLocal int, media, des
 	entrada <-chan MsgPesos, salida chan<- MsgGradiente, wg *sync.WaitGroup) {
 
 	defer wg.Done()
-	gw := make([]float64, NumFeat)
-	rng := rand.New(rand.NewSource(int64(1000 + id)))
+	// Desde la PC4 la lógica del worker vive en ShardLocal: la misma que
+	// ejecutan los nodos remotos del clúster detrás de la conexión TCP.
+	sl := NuevoShardLocal(id, recs, shard, loteLocal, Normalizacion{MediaEdad: media, DesvEdad: desv, PesoPos: pesoPos})
 	for msg := range entrada {
 		if msg.Fin {
 			return
 		}
-		if msg.Paso == 0 { // nueva época: baraja el shard local
-			rng.Shuffle(len(shard), func(i, j int) { shard[i], shard[j] = shard[j], shard[i] })
-		}
-		ini := msg.Paso * loteLocal
-		fin := ini + loteLocal
-		if fin > len(shard) {
-			fin = len(shard)
-		}
-		gb, perd, pt := gradienteLote(recs, shard[ini:fin], msg.W, msg.B, media, desv, pesoPos, gw)
-		out := make([]float64, NumFeat)
-		copy(out, gw)
-		salida <- MsgGradiente{Worker: id, Paso: msg.Paso, GW: out, GB: gb, Perdida: perd, PesoTotal: pt, Muestras: fin - ini}
+		salida <- sl.Responder(msg)
 	}
 }
 

@@ -1,0 +1,8 @@
+NAME                       IMAGE                       STATUS                   PORTS
+epidemiologia-go-api-1     epidemiologia-go/api:pc4    Up 6 minutes (healthy)   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+epidemiologia-go-mongo-1   mongo:7                     Up 7 minutes (healthy)   27017/tcp
+epidemiologia-go-node1-1   epidemiologia-go/node:pc4   Up 7 minutes             9000/tcp
+epidemiologia-go-node2-1   epidemiologia-go/node:pc4   Up 7 minutes             9000/tcp
+epidemiologia-go-node3-1   epidemiologia-go/node:pc4   Up 7 minutes             9000/tcp
+epidemiologia-go-node4-1   epidemiologia-go/node:pc4   Up 7 minutes             9000/tcp
+epidemiologia-go-redis-1   redis:7-alpine              Up 7 minutes (healthy)   6379/tcp

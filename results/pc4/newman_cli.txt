@@ -1,0 +1,180 @@
+newman
+
+TF CC65 · Caso 1 · API Riesgo COVID-19 (PC4)
+
+❏ 1. Sistema y autenticación
+↳ Health check
+  GET http://localhost:8080/health [200 OK, 532B, 31ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (31 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Coordinador listo
+  ✓  4 nodos activos
+  ✓  MongoDB y Redis conectados
+
+↳ Login admin
+  POST http://localhost:8080/api/auth/login [200 OK, 654B, 44ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (44 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Devuelve JWT
+  ✓  Rol admin
+
+↳ Login analista
+  POST http://localhost:8080/api/auth/login [200 OK, 668B, 49ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (49 ms)
+  ✓  Cabecera X-Response-Time presente
+
+↳ Login con contraseña incorrecta (401)
+  POST http://localhost:8080/api/auth/login [401 Unauthorized, 454B, 42ms]
+  ✓  Status 401
+  ✓  Latencia < 100 ms (42 ms)
+  ✓  Cabecera X-Response-Time presente
+
+↳ Endpoint protegido sin token (401)
+  GET http://localhost:8080/api/modelo [401 Unauthorized, 472B, 6ms]
+  ✓  Status 401
+  ✓  Latencia < 100 ms (6 ms)
+  ✓  Cabecera X-Response-Time presente
+
+❏ 2. Predicciones
+↳ Predicción: adulto mayor, Lima, ola 2
+  POST http://localhost:8080/api/predicciones [200 OK, 1.16kB, 9ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (9 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Nivel de riesgo alto o muy alto
+  ✓  Letalidad entre 0 y 1
+  ✓  Incluye 4 factores explicativos
+
+↳ Predicción: mujer joven, Cusco, post-olas
+  POST http://localhost:8080/api/predicciones [200 OK, 1.08kB, 3ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (3 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Nivel de riesgo bajo
+
+↳ Predicción repetida (respuesta desde Redis)
+  POST http://localhost:8080/api/predicciones [200 OK, 1.16kB, 3ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (3 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  cache = true (Redis)
+
+↳ Predicción con edad inválida (400)
+  POST http://localhost:8080/api/predicciones [400 Bad Request, 447B, 2ms]
+  ✓  Status 400
+  ✓  Latencia < 100 ms (2 ms)
+  ✓  Cabecera X-Response-Time presente
+
+↳ Predicción con departamento inválido (400)
+  POST http://localhost:8080/api/predicciones [400 Bad Request, 453B, 4ms]
+  ✓  Status 400
+  ✓  Latencia < 100 ms (4 ms)
+  ✓  Cabecera X-Response-Time presente
+
+↳ Predicción en lote (5 casos)
+  POST http://localhost:8080/api/predicciones/lote [200 OK, 4.05kB, 3ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (3 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  5 resultados
+
+↳ Historial de predicciones (MongoDB)
+  GET http://localhost:8080/api/predicciones?limit=10 [200 OK, 1.35kB, 7ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (7 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Hay predicciones registradas
+
+❏ 3. Impacto social
+↳ Top 15 provincias por casos graves esperados
+  GET http://localhost:8080/api/impacto?top=15 [200 OK, 3.95kB, 8ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (8 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  15 provincias ordenadas
+
+↳ Impacto filtrado por departamento (LIMA)
+  GET http://localhost:8080/api/impacto?top=10&departamento=LIMA [200 OK, 2.58kB, 7ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (7 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Solo provincias de Lima
+
+↳ Impacto agregado por departamento
+  GET http://localhost:8080/api/impacto/departamentos [200 OK, 3.43kB, 4ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (4 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  25 departamentos o menos
+
+❏ 4. Modelo, clúster y entrenamiento
+↳ Modelo activo
+  GET http://localhost:8080/api/modelo [200 OK, 4.02kB, 4ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (4 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  AUC > 0.85
+  ✓  Entrenado en el clúster
+
+↳ Resumen del dataset
+  GET http://localhost:8080/api/dataset [200 OK, 1.7kB, 7ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (7 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Más de 1 millón de registros
+
+↳ Estado del clúster
+  GET http://localhost:8080/api/cluster [200 OK, 1.95kB, 5ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (5 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Todos los nodos conectados
+
+↳ Analista no puede entrenar (403)
+  POST http://localhost:8080/api/entrenamientos [403 Forbidden, 469B, 4ms]
+  ✓  Status 403
+  ✓  Latencia < 100 ms (4 ms)
+  ✓  Cabecera X-Response-Time presente
+
+↳ Lanzar entrenamiento distribuido (admin, 202)
+  POST http://localhost:8080/api/entrenamientos [202 Accepted, 737B, 5ms]
+  ✓  Status 202
+  ✓  Latencia < 100 ms (5 ms)
+  ✓  Cabecera X-Response-Time presente
+
+↳ Consultar entrenamiento
+  GET http://localhost:8080/api/entrenamientos/20261121-221241-b8199424f0d1 [200 OK, 707B, 2ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (2 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  Estado válido
+
+↳ Métricas de latencia de la API
+  GET http://localhost:8080/api/metricas [200 OK, 2.68kB, 4ms]
+  ✓  Status 200
+  ✓  Latencia < 100 ms (4 ms)
+  ✓  Cabecera X-Response-Time presente
+  ✓  p99 de predicciones < 100 ms
+
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │         executed │           failed │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │                1 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │               22 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │               22 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │                0 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │               87 │                0 │
+├─────────────────────────┴──────────────────┴──────────────────┤
+│ total run duration: 1848ms                                    │
+├───────────────────────────────────────────────────────────────┤
+│ total data received: 26.06kB (approx)                         │
+├───────────────────────────────────────────────────────────────┤
+│ average response time: 11ms [min: 2ms, max: 49ms, s.d.: 14ms] │
+└───────────────────────────────────────────────────────────────┘
