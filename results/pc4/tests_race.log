@@ -1,0 +1,24 @@
+--- PASS: TestJWT (0.00s)
+--- PASS: TestPassword (1.86s)
+--- PASS: TestValidacionEntrada (0.00s)
+--- PASS: TestNivelYCalculo (0.00s)
+--- PASS: TestPercentiles (0.00s)
+--- PASS: TestRutasYAuth (0.54s)
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/api	3.446s
+--- PASS: TestDistribuidoIgualLocal (1.15s)
+--- PASS: TestImpactoDistribuidoIgualLocal (0.10s)
+--- PASS: TestNodoCaido (0.03s)
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/cluster	3.455s
+--- PASS: TestParseLimpieza (0.00s)
+--- PASS: TestEsquemaFallecidos (0.00s)
+--- PASS: TestConcurrenteIgualSecuencial (3.55s)
+--- PASS: TestEDA (0.00s)
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/data	4.575s
+--- PASS: TestGradienteNumerico (0.00s)
+--- PASS: TestParaleloConverge (0.81s)
+--- PASS: TestLetalidadEsperadaCalibrada (0.34s)
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/ml	3.451s

@@ -1,0 +1,1124 @@
+{
+  "info": {
+    "name": "TF CC65 · Caso 1 · API Riesgo COVID-19 (PC4)",
+    "description": "Pruebas funcionales y de latencia (< 100 ms) de la API coordinadora en Go.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Sistema y autenticación",
+      "item": [
+        {
+          "name": "Health check",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "const j = pm.response.json();",
+                  "pm.test(\"Coordinador listo\", () => pm.expect(j.estado).to.eql(\"listo\"));",
+                  "pm.test(\"4 nodos activos\", () => pm.expect(j.nodos_activos).to.eql(4));",
+                  "pm.test(\"MongoDB y Redis conectados\", () => { pm.expect(j.mongo).to.be.true; pm.expect(j.redis).to.be.true; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Login admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "const j = pm.response.json();",
+                  "pm.test(\"Devuelve JWT\", () => pm.expect(j.token.split(\".\").length).to.eql(3));",
+                  "pm.test(\"Rol admin\", () => pm.expect(j.rol).to.eql(\"admin\"));",
+                  "pm.collectionVariables.set(\"token\", j.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login analista",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.collectionVariables.set(\"tokenAnalista\", pm.response.json().token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"analista\",\n  \"password\": \"analista123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login con contraseña incorrecta (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"x\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Endpoint protegido sin token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/modelo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "modelo"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Predicciones",
+      "item": [
+        {
+          "name": "Predicción: adulto mayor, Lima, ola 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "const j = pm.response.json();",
+                  "pm.test(\"Nivel de riesgo alto o muy alto\", () => pm.expect([\"ALTO\",\"MUY ALTO\"]).to.include(j.nivel_riesgo));",
+                  "pm.test(\"Letalidad entre 0 y 1\", () => pm.expect(j.letalidad_estimada).to.be.within(0, 1));",
+                  "pm.test(\"Incluye 4 factores explicativos\", () => pm.expect(j.factores.length).to.eql(4));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/predicciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "predicciones"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"edad\": 72,\n  \"sexo\": \"M\",\n  \"departamento\": \"LIMA\",\n  \"provincia\": \"LIMA\",\n  \"fecha\": \"2021-04-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Predicción: mujer joven, Cusco, post-olas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"Nivel de riesgo bajo\", () => pm.expect(pm.response.json().nivel_riesgo).to.eql(\"BAJO\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/predicciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "predicciones"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"edad\": 24,\n  \"sexo\": \"F\",\n  \"departamento\": \"CUSCO\",\n  \"fecha\": \"2023-06-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Predicción repetida (respuesta desde Redis)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"cache = true (Redis)\", () => pm.expect(pm.response.json().cache).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/predicciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "predicciones"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"edad\": 72,\n  \"sexo\": \"M\",\n  \"departamento\": \"LIMA\",\n  \"provincia\": \"LIMA\",\n  \"fecha\": \"2021-04-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Predicción con edad inválida (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/predicciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "predicciones"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"edad\": 150,\n  \"sexo\": \"M\",\n  \"departamento\": \"LIMA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Predicción con departamento inválido (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/predicciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "predicciones"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"edad\": 40,\n  \"sexo\": \"F\",\n  \"departamento\": \"ATLANTIDA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Predicción en lote (5 casos)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"5 resultados\", () => pm.expect(pm.response.json().total).to.eql(5));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/predicciones/lote",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "predicciones",
+                "lote"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"casos\": [\n    {\n      \"edad\": 85,\n      \"sexo\": \"F\",\n      \"departamento\": \"PIURA\"\n    },\n    {\n      \"edad\": 35,\n      \"sexo\": \"M\",\n      \"departamento\": \"AREQUIPA\"\n    },\n    {\n      \"edad\": 61,\n      \"sexo\": \"M\",\n      \"departamento\": \"LORETO\",\n      \"fecha\": \"2020-07-10\"\n    },\n    {\n      \"edad\": 8,\n      \"sexo\": \"F\",\n      \"departamento\": \"PUNO\"\n    },\n    {\n      \"edad\": 55,\n      \"sexo\": \"M\",\n      \"departamento\": \"CALLAO\",\n      \"fecha\": \"2021-02-01\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Historial de predicciones (MongoDB)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"Hay predicciones registradas\", () => pm.expect(pm.response.json().total_historico).to.be.above(0));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/predicciones?limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "predicciones"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Impacto social",
+      "item": [
+        {
+          "name": "Top 15 provincias por casos graves esperados",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "const j = pm.response.json();",
+                  "pm.test(\"15 provincias ordenadas\", () => { pm.expect(j.provincias.length).to.eql(15); pm.expect(j.provincias[0].graves_esperados).to.be.at.least(j.provincias[14].graves_esperados); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/impacto?top=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "impacto"
+              ],
+              "query": [
+                {
+                  "key": "top",
+                  "value": "15"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Impacto filtrado por departamento (LIMA)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"Solo provincias de Lima\", () => pm.response.json().provincias.forEach(p => pm.expect(p.departamento).to.eql(\"LIMA\")));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/impacto?top=10&departamento=LIMA",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "impacto"
+              ],
+              "query": [
+                {
+                  "key": "top",
+                  "value": "10"
+                },
+                {
+                  "key": "departamento",
+                  "value": "LIMA"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Impacto agregado por departamento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"25 departamentos o menos\", () => pm.expect(pm.response.json().length).to.be.within(1, 25));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/impacto/departamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "impacto",
+                "departamentos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Modelo, clúster y entrenamiento",
+      "item": [
+        {
+          "name": "Modelo activo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "const j = pm.response.json();",
+                  "pm.test(\"AUC > 0.85\", () => pm.expect(j.metricas.AUC).to.be.above(0.85));",
+                  "pm.test(\"Entrenado en el clúster\", () => pm.expect(j.distribucion.nodos.length).to.be.above(0));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/modelo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "modelo"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Resumen del dataset",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"Más de 1 millón de registros\", () => pm.expect(pm.response.json().positivos).to.be.above(1000000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/dataset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dataset"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Estado del clúster",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"Todos los nodos conectados\", () => pm.response.json().nodos.forEach(n => pm.expect(n.conectado).to.be.true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cluster",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cluster"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analista no puede entrenar (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 403\", () => pm.response.to.have.status(403));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/entrenamientos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "entrenamientos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAnalista}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodos\": 2,\n  \"epocas\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Lanzar entrenamiento distribuido (admin, 202)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 202\", () => pm.response.to.have.status(202));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.collectionVariables.set(\"jobId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/entrenamientos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "entrenamientos"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodos\": 4,\n  \"epocas\": 6\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Consultar entrenamiento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"Estado válido\", () => pm.expect([\"en_cola\",\"distribuyendo\",\"entrenando\",\"evaluando\",\"completado\"]).to.include(pm.response.json().estado));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/entrenamientos/{{jobId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "entrenamientos",
+                "{{jobId}}"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Métricas de latencia de la API",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Latencia < 100 ms (\" + pm.response.responseTime + \" ms)\", () => pm.expect(pm.response.responseTime).to.be.below(100));",
+                  "pm.test(\"Cabecera X-Response-Time presente\", () => pm.response.to.have.header(\"X-Response-Time\"));",
+                  "pm.test(\"p99 de predicciones < 100 ms\", () => { const r = pm.response.json().latencias.find(x => x.ruta === \"POST /api/predicciones\"); pm.expect(r.p99_ms).to.be.below(100); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metricas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metricas"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "tokenAnalista",
+      "value": ""
+    },
+    {
+      "key": "jobId",
+      "value": ""
+    }
+  ]
+}

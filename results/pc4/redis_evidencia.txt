@@ -1,0 +1,32 @@
+$ redis-cli dbsize
+12778
+
+$ redis-cli --scan  (muestra por tipo de clave)
+modelo:activo
+stats:predicciones
+cluster:nodo:node4
+cluster:nodo:node3
+cluster:nodo:node2
+cluster:nodo:node1
+impacto:v7::15
+pred:v7:29:0:1:3
+pred:v7:95:1:14:3
+pred:v7:16:1:4:2
+pred:v7:95:1:8:0
+pred:v7:40:0:15:3
+...
+
+$ redis-cli ttl pred:v7:29:0:1:3
+3590
+$ redis-cli ttl cluster:nodo:node1
+14
+
+$ redis-cli get pred:v7:85:0:19:3
+{"entrada":{"edad":85,"sexo":"F","departamento":"PIURA","fecha":"2022-11-15"},"probabilidad_clasificador":0.7113863152885377,"clasificacion":"ALTO RIESGO","letalidad_estimada":0.11888690437915456,"letalidad_estimada_pct":"11.89%","nivel_riesgo":"ALTO","periodo_epidemiologico":"Post-olas (may22+)","factores":[{"variable":"edad","valor":"85","aporte_logit":3.778747108443786},{"variable":"sexo","valor":"F","aporte_logit":0},{"variable":"departamento","valor":"PIURA","aporte_logit":0.3660910064833739},{"variable":"periodo","valor":"Post-olas (may22+)","aporte_logit":-1.7038408883719487}],"recomendacion":"Priorizar evaluación presencial y prever disponibilidad de oxígeno.","modelo_version":7,"cache":false,"latencia_ms":0}
+
+$ redis-cli get stats:predicciones
+274861
+
+$ redis-cli info stats | grep keyspace
+keyspace_hits:276291
+keyspace_misses:32771

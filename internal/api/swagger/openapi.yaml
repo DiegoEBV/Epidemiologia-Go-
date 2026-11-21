@@ -1,0 +1,315 @@
+openapi: 3.0.3
+info:
+  title: API de Riesgo Epidemiológico COVID-19 (coordinador del clúster ML)
+  version: "1.0.0"
+  description: |
+    API REST/WebSocket escrita en Go (`net/http`) para el **Caso 1 del TF de CC65**.
+    Además de exponer las predicciones, actúa como **coordinador** del clúster de
+    nodos ML: reparte los datos por TCP, ejecuta la regresión logística distribuida
+    (Parameter Server síncrono) y combina los resultados.
+
+    **Autenticación:** `POST /api/auth/login` devuelve un JWT (HS256). Pulse
+    **Authorize** y pegue el token. Usuarios de prueba: `admin / admin123` (rol admin)
+    y `analista / analista123` (rol analista).
+
+    **Rendimiento:** cada respuesta incluye la cabecera `X-Response-Time`. El objetivo
+    del enunciado es responder en menos de 100 ms.
+
+    **Pregunta de impacto social:** ¿En qué provincias se concentrará el mayor número
+    de casos graves (fallecimientos) según la edad, el sexo y el momento epidemiológico
+    de sus casos positivos recientes, para priorizar camas UCI, oxígeno y vacunación?
+  contact:
+    name: Grupo TF CC65 – Caso 1
+servers:
+  - url: http://localhost:8080
+    description: Docker Compose local
+tags:
+  - name: Autenticación
+  - name: Predicciones
+  - name: Impacto social
+  - name: Modelo y entrenamiento
+  - name: Clúster
+  - name: Sistema
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      tags: [Sistema]
+      summary: Estado del coordinador, MongoDB, Redis y nodos
+      security: []
+      responses:
+        "200":
+          description: Servicio operativo
+          content:
+            application/json:
+              example: {estado: listo, uptime_s: 120, nodos_activos: 4, nodos_total: 4, entrenando: false, modelo_version: 1, mongo: true, redis: true, clientes_ws: 0}
+        "503": {description: El arranque falló}
+  /api/auth/login:
+    post:
+      tags: [Autenticación]
+      summary: Inicia sesión y obtiene un JWT
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/Login"}
+            example: {username: admin, password: admin123}
+      responses:
+        "200":
+          description: Token emitido (válido 8 horas)
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Token"}
+        "401": {$ref: "#/components/responses/NoAutorizado"}
+  /api/predicciones:
+    post:
+      tags: [Predicciones]
+      summary: Predice el riesgo de un caso positivo
+      description: |
+        Codifica el caso (edad, sexo, departamento, periodo epidemiológico), aplica el
+        modelo activo y devuelve la probabilidad del clasificador, la letalidad estimada,
+        el nivel de riesgo y el aporte de cada variable. Las respuestas se guardan en
+        Redis (TTL 1 h) y cada consulta se audita en MongoDB de forma asíncrona.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/EntradaPrediccion"}
+            examples:
+              adulto_mayor: {summary: Adulto mayor en Lima, value: {edad: 72, sexo: M, departamento: LIMA, provincia: LIMA, fecha: "2021-04-15"}}
+              joven: {summary: Mujer joven en Cusco, value: {edad: 24, sexo: F, departamento: CUSCO, fecha: "2023-06-01"}}
+      responses:
+        "200":
+          description: Predicción
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Prediccion"}
+        "400": {$ref: "#/components/responses/Invalido"}
+        "401": {$ref: "#/components/responses/NoAutorizado"}
+        "503": {description: El modelo aún se está entrenando}
+    get:
+      tags: [Predicciones]
+      summary: Historial de predicciones (MongoDB)
+      parameters:
+        - {name: limit, in: query, schema: {type: integer, default: 50, maximum: 500}}
+        - {name: departamento, in: query, schema: {type: string, example: LIMA}}
+      responses:
+        "200": {description: Últimas predicciones registradas}
+  /api/predicciones/lote:
+    post:
+      tags: [Predicciones]
+      summary: Predice hasta 1000 casos en una sola llamada
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [casos]
+              properties:
+                casos:
+                  type: array
+                  maxItems: 1000
+                  items: {$ref: "#/components/schemas/EntradaPrediccion"}
+            example: {casos: [{edad: 85, sexo: F, departamento: PIURA}, {edad: 35, sexo: M, departamento: AREQUIPA}, {edad: 61, sexo: M, departamento: LORETO, fecha: "2020-07-10"}]}
+      responses:
+        "200": {description: Resultados y conteo por nivel de riesgo}
+        "400": {$ref: "#/components/responses/Invalido"}
+  /api/impacto:
+    get:
+      tags: [Impacto social]
+      summary: Ranking de provincias por casos graves esperados
+      description: |
+        Responde la pregunta de impacto. El ranking lo calcula el clúster (map-reduce
+        por TCP) al terminar cada entrenamiento, se persiste en MongoDB y se sirve
+        desde Redis.
+      parameters:
+        - {name: top, in: query, schema: {type: integer, default: 15, maximum: 300}}
+        - {name: departamento, in: query, schema: {type: string, example: LIMA}}
+      responses:
+        "200":
+          description: Ranking
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/RespuestaImpacto"}
+  /api/impacto/departamentos:
+    get:
+      tags: [Impacto social]
+      summary: Casos graves esperados agregados por departamento (agregación MongoDB)
+      responses:
+        "200": {description: Agregado por departamento}
+  /api/dataset:
+    get:
+      tags: [Modelo y entrenamiento]
+      summary: Resumen de la carga y limpieza de los CSV del MINSA
+      responses:
+        "200": {description: Resumen del dataset}
+  /api/modelo:
+    get:
+      tags: [Modelo y entrenamiento]
+      summary: Modelo activo (pesos, métricas, historial y distribución)
+      responses:
+        "200": {description: Modelo activo}
+  /api/modelos:
+    get:
+      tags: [Modelo y entrenamiento]
+      summary: Versiones del modelo
+      parameters:
+        - {name: limit, in: query, schema: {type: integer, default: 20}}
+      responses:
+        "200": {description: Lista de versiones}
+  /api/entrenamientos:
+    post:
+      tags: [Modelo y entrenamiento]
+      summary: Lanza un entrenamiento distribuido (solo rol admin)
+      description: |
+        Reparte el set de entrenamiento entre `nodos` nodos por TCP y ejecuta el
+        Parameter Server síncrono. Responde 202 de inmediato; el progreso se consulta
+        en `GET /api/entrenamientos/{id}` o se recibe por WebSocket (`/ws`).
+      requestBody:
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/SolicitudEntrenamiento"}
+            example: {nodos: 4, epocas: 6, lote_global: 16384, tasa_aprendizaje: 0.8}
+      responses:
+        "202": {description: Trabajo aceptado}
+        "403": {description: El rol no es admin}
+        "409": {description: Ya hay un entrenamiento en curso}
+    get:
+      tags: [Modelo y entrenamiento]
+      summary: Últimos entrenamientos
+      responses:
+        "200": {description: Lista de trabajos}
+  /api/entrenamientos/{id}:
+    get:
+      tags: [Modelo y entrenamiento]
+      summary: Estado de un entrenamiento
+      parameters:
+        - {name: id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Trabajo}
+        "404": {description: No existe}
+  /api/cluster:
+    get:
+      tags: [Clúster]
+      summary: Estado de los nodos (último latido, RTT, CPU, memoria, fragmento)
+      responses:
+        "200": {description: Estado del clúster}
+  /api/cluster/metricas:
+    get:
+      tags: [Clúster]
+      summary: Serie temporal de métricas de los nodos (MongoDB, TTL 24 h)
+      parameters:
+        - {name: nodo, in: query, schema: {type: string, example: node1}}
+        - {name: limit, in: query, schema: {type: integer, default: 100}}
+      responses:
+        "200": {description: Muestras}
+  /api/metricas:
+    get:
+      tags: [Sistema]
+      summary: Latencias por ruta (p50/p95/p99), caché y conteo de colecciones
+      responses:
+        "200": {description: Métricas de rendimiento}
+  /ws:
+    get:
+      tags: [Sistema]
+      summary: WebSocket de eventos en tiempo real
+      description: |
+        Conectar con `ws://localhost:8080/ws?token=JWT`. Eventos JSON
+        `{tipo, ts, datos}` con `tipo` ∈ `estado`, `cluster` (cada 2 s),
+        `entrenamiento` (cada época).
+      parameters:
+        - {name: token, in: query, required: true, schema: {type: string}}
+      responses:
+        "101": {description: Cambio a protocolo WebSocket}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
+  responses:
+    NoAutorizado:
+      description: Falta el token o es inválido
+      content:
+        application/json:
+          example: {error: token inválido, status: 401}
+    Invalido:
+      description: Entrada inválida
+      content:
+        application/json:
+          example: {error: edad debe estar entre 0 y 110, status: 400}
+  schemas:
+    Login:
+      type: object
+      required: [username, password]
+      properties:
+        username: {type: string}
+        password: {type: string, format: password}
+    Token:
+      type: object
+      properties:
+        token: {type: string}
+        tipo: {type: string, example: Bearer}
+        expira: {type: string, format: date-time}
+        usuario: {type: string}
+        rol: {type: string, enum: [admin, analista]}
+    EntradaPrediccion:
+      type: object
+      required: [edad, sexo, departamento]
+      properties:
+        edad: {type: integer, minimum: 0, maximum: 110, example: 72}
+        sexo: {type: string, enum: [M, F], example: M}
+        departamento: {type: string, example: LIMA, description: Uno de los 25 departamentos (incluye CALLAO)}
+        provincia: {type: string, example: LIMA}
+        fecha: {type: string, format: date, example: "2021-04-15", description: Fecha del resultado; define la ola. Si se omite se usa el periodo post-olas.}
+    Factor:
+      type: object
+      properties:
+        variable: {type: string}
+        valor: {type: string}
+        aporte_logit: {type: number}
+    Prediccion:
+      type: object
+      properties:
+        entrada: {$ref: "#/components/schemas/EntradaPrediccion"}
+        probabilidad_clasificador: {type: number, description: "σ(z) del modelo con ponderación de clases (umbral 0.5)"}
+        clasificacion: {type: string, enum: [ALTO RIESGO, BAJO RIESGO]}
+        letalidad_estimada: {type: number, description: Probabilidad estimada de fallecer (intercepto corregido)}
+        letalidad_estimada_pct: {type: string, example: "18.40%"}
+        nivel_riesgo: {type: string, enum: [BAJO, MODERADO, ALTO, MUY ALTO]}
+        periodo_epidemiologico: {type: string}
+        factores: {type: array, items: {$ref: "#/components/schemas/Factor"}}
+        recomendacion: {type: string}
+        modelo_version: {type: integer}
+        cache: {type: boolean, description: true si la respuesta vino de Redis}
+        latencia_ms: {type: number}
+    Impacto:
+      type: object
+      properties:
+        modelo_version: {type: integer}
+        ranking: {type: integer}
+        departamento: {type: string}
+        provincia: {type: string}
+        positivos: {type: integer}
+        graves_esperados: {type: number}
+        tasa_por_1000: {type: number}
+        pct_mayores_60: {type: number}
+        mes_desde: {type: integer, example: 202312}
+    RespuestaImpacto:
+      type: object
+      properties:
+        modelo_version: {type: integer}
+        casos_desde: {type: integer}
+        pregunta: {type: string}
+        total_graves_esperados: {type: number}
+        cache: {type: boolean}
+        provincias: {type: array, items: {$ref: "#/components/schemas/Impacto"}}
+    SolicitudEntrenamiento:
+      type: object
+      properties:
+        nodos: {type: integer, description: "Nodos a usar (0 = todos los activos)"}
+        epocas: {type: integer, default: 6}
+        lote_global: {type: integer, default: 16384}
+        tasa_aprendizaje: {type: number, default: 0.8}
+        decaimiento: {type: number, default: 0.5}
+        l2: {type: number, default: 0.00001}

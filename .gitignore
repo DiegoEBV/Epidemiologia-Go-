@@ -1,3 +1,8 @@
 data/*.csv
+**/*.csv
 bin/
 *.test
+
+# Documentos (informes, enunciados)
+*.docx
+*.pdf

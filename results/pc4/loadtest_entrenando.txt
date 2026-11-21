@@ -1,0 +1,9 @@
+2026/11/21 17:14:44 carga: 32 clientes durante 6s contra http://localhost:8080
+
+ruta                              req    err    req/s   p50 ms   p95 ms   p99 ms   max ms    <100ms
+TOTAL                           49948      0     8320     3.19     8.27    12.86    76.20   100.00%
+GET /api/impacto                 4898      0      816     3.45     8.60    13.03    61.43   100.00%
+POST /api/predicciones          40061      0     6673     3.29     8.39    13.07    76.20   100.00%
+GET /api/cluster                 4989      0      831     2.02     6.14    10.08    57.85   100.00%
+
+Resultados guardados en results/pc4/latencia_entrenando.json

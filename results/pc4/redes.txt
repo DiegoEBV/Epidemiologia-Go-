@@ -1,0 +1,2 @@
+epidemiologia-go_cluster internal=true subred=172.18.0.0/16 contenedores=epidemiologia-go-api-1 epidemiologia-go-node4-1 epidemiologia-go-node1-1 epidemiologia-go-node3-1 epidemiologia-go-node2-1 
+epidemiologia-go_datos internal=true subred=172.19.0.0/16 contenedores=epidemiologia-go-api-1 epidemiologia-go-redis-1 epidemiologia-go-mongo-1 

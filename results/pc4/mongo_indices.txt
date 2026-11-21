@@ -1,0 +1,39 @@
+== usuarios ==
+   {"_id":1}  
+   {"username":1} UNIQUE 
+== modelos ==
+   {"_id":1}  
+   {"activo":1}  
+   {"creado":-1}  
+== entrenamientos ==
+   {"_id":1}  
+   {"creado":-1}  
+   {"estado":1}  
+== predicciones ==
+   {"_id":1}  
+   {"ts":-1}  
+   {"entrada.departamento":1,"ts":-1}  
+== impacto_provincias ==
+   {"_id":1}  
+   {"modelo_version":1,"ranking":1}  
+   {"modelo_version":1,"departamento":1}  
+== metricas_cluster ==
+   {"_id":1}  
+   {"ts":1}  TTL 86400s
+   {"nodo":1,"ts":-1}  
+
+== explain: top impacto (usa índice) ==
+  etapa: "FETCH" · docs examinados: 15 · tiempo: 0 ms
+
+== agregación: casos graves esperados por departamento (top 5) ==
+   LIMA           positivos  29289 graves esperados 375.8
+   LAMBAYEQUE     positivos   2680 graves esperados 47.5
+   AREQUIPA       positivos   3206 graves esperados 39.5
+   PIURA          positivos   2547 graves esperados 36.3
+   LA LIBERTAD    positivos   1944 graves esperados 35.1
+
+== predicciones por nivel de riesgo ==
+   BAJO         113955 latencia interna prom. 0.827 ms
+   MUY ALTO      58354 latencia interna prom. 0.834 ms
+   MODERADO      49069 latencia interna prom. 0.836 ms
+   ALTO          31060 latencia interna prom. 0.835 ms
