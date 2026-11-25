@@ -126,12 +126,21 @@ func usuarioDe(ctx context.Context) *Claims {
 	return c
 }
 
-// tokenDe extrae el JWT de "Authorization: Bearer ..." o de ?token= (WebSocket).
+// tokenDe acepta Bearer y, en WebSocket, el subprotocolo de la SPA o la
+// consulta usada por los clientes de PC4.
 func tokenDe(r *http.Request) string {
 	if h := r.Header.Get("Authorization"); strings.HasPrefix(h, "Bearer ") {
 		return strings.TrimPrefix(h, "Bearer ")
 	}
-	return r.URL.Query().Get("token")
+	if r.URL.Path == "/ws" {
+		for _, value := range strings.Split(r.Header.Get("Sec-WebSocket-Protocol"), ",") {
+			if token, ok := strings.CutPrefix(strings.TrimSpace(value), "jwt."); ok {
+				return token
+			}
+		}
+		return r.URL.Query().Get("token")
+	}
+	return ""
 }
 
 // conAuth exige un JWT válido y, si se indican, alguno de los roles.

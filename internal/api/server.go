@@ -7,7 +7,10 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"runtime/debug"
+	"strings"
 	"time"
 )
 
@@ -32,9 +35,17 @@ func NuevoServidor(cfg Config, app *App, hub *Hub) *Servidor {
 	s.mux.HandleFunc("GET /health", s.salud)
 	s.mux.HandleFunc("POST /api/auth/login", s.login)
 	s.mux.HandleFunc("GET /swagger/", s.swagger)
-	s.mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/swagger/", http.StatusFound)
-	})
+	if _, err := os.Stat(filepath.Join(cfg.WebDir, "index.html")); cfg.WebDir != "" && err == nil {
+		s.mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Cache-Control", "no-cache")
+			http.ServeFile(w, r, filepath.Join(cfg.WebDir, "index.html"))
+		})
+		s.mux.Handle("GET /assets/", http.FileServer(http.Dir(cfg.WebDir)))
+	} else {
+		s.mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, "/swagger/", http.StatusFound)
+		})
+	}
 
 	// Protegidas con JWT
 	s.mux.HandleFunc("POST /api/predicciones", s.conAuth(s.predecir))
@@ -50,15 +61,15 @@ func NuevoServidor(cfg Config, app *App, hub *Hub) *Servidor {
 	s.mux.HandleFunc("GET /api/entrenamientos/{id}", s.conAuth(s.obtenerEntrenamiento))
 	s.mux.HandleFunc("GET /api/cluster", s.conAuth(s.estadoCluster))
 	s.mux.HandleFunc("GET /api/cluster/metricas", s.conAuth(s.metricasCluster))
-	s.mux.HandleFunc("GET /api/metricas", s.conAuth(s.metricasAPI))
+	s.mux.HandleFunc("GET /api/metricas", s.conAuth(s.metricasAPI, admin))
 	s.mux.HandleFunc("GET /ws", s.conAuth(s.manejarWS))
 	return s
 }
 
 // Handler devuelve el enrutador con la cadena de middleware:
-// recuperación de pánicos → CORS → medición de latencia → rutas.
+// recuperación de pánicos → cabeceras de seguridad → medición → rutas.
 func (s *Servidor) Handler() http.Handler {
-	return s.recuperar(s.cors(s.medir(s.mux)))
+	return s.recuperar(proteger(s.medir(s.mux)))
 }
 
 // Correr arranca el hub de WebSocket y la suscripción a Redis.
@@ -83,16 +94,17 @@ func (s *Servidor) medir(next http.Handler) http.Handler {
 	})
 }
 
-func (s *Servidor) cors(next http.Handler) http.Handler {
+func proteger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h := w.Header()
-		h.Set("Access-Control-Allow-Origin", "*")
-		h.Set("Access-Control-Allow-Headers", "Authorization, Content-Type")
-		h.Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-		h.Set("Access-Control-Expose-Headers", "X-Response-Time, Server-Timing")
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusNoContent)
-			return
+		h.Set("X-Content-Type-Options", "nosniff")
+		h.Set("Referrer-Policy", "no-referrer")
+		h.Set("X-Frame-Options", "DENY")
+		if r.URL.Path == "/" {
+			h.Set("Content-Security-Policy", "default-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'")
+		}
+		if r.URL.Path == "/ws" || strings.HasPrefix(r.URL.Path, "/api/") {
+			h.Set("Cache-Control", "no-store")
 		}
 		next.ServeHTTP(w, r)
 	})

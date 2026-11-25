@@ -25,6 +25,8 @@ const canalEventos = store.CanalEventos
 
 // Config de la API coordinadora (se llena desde variables de entorno).
 type Config struct {
+	WebDir              string
+	FuenteDatos         string
 	Puerto              string
 	MongoURI, MongoDB   string
 	RedisAddr           string

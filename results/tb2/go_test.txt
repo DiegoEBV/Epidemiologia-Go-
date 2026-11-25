@@ -1,0 +1,60 @@
+go: downloading github.com/redis/go-redis/v9 v9.7.3
+go: downloading go.mongodb.org/mongo-driver/v2 v2.3.0
+go: downloading github.com/gorilla/websocket v1.5.3
+go: downloading github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
+go: downloading github.com/cespare/xxhash/v2 v2.2.0
+go: downloading github.com/xdg-go/scram v1.1.2
+go: downloading github.com/xdg-go/stringprep v1.0.4
+go: downloading github.com/golang/snappy v1.0.0
+go: downloading golang.org/x/sync v0.11.0
+go: downloading golang.org/x/crypto v0.33.0
+go: downloading github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78
+go: downloading github.com/klauspost/compress v1.16.7
+go: downloading github.com/xdg-go/pbkdf2 v1.0.0
+go: downloading golang.org/x/text v0.22.0
+?   	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/cmd/api	[no test files]
+?   	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/cmd/gensample	[no test files]
+?   	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/cmd/loadtest	[no test files]
+?   	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/cmd/node	[no test files]
+?   	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/cmd/pc3	[no test files]
+=== RUN   TestJWT
+--- PASS: TestJWT (0.00s)
+=== RUN   TestPassword
+--- PASS: TestPassword (0.16s)
+=== RUN   TestValidacionEntrada
+--- PASS: TestValidacionEntrada (0.00s)
+=== RUN   TestNivelYCalculo
+--- PASS: TestNivelYCalculo (0.00s)
+=== RUN   TestPercentiles
+--- PASS: TestPercentiles (0.00s)
+=== RUN   TestRutasYAuth
+--- PASS: TestRutasYAuth (0.00s)
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/api	0.185s
+=== RUN   TestDistribuidoIgualLocal
+--- PASS: TestDistribuidoIgualLocal (0.53s)
+=== RUN   TestImpactoDistribuidoIgualLocal
+--- PASS: TestImpactoDistribuidoIgualLocal (0.04s)
+=== RUN   TestNodoCaido
+--- PASS: TestNodoCaido (0.01s)
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/cluster	0.604s
+=== RUN   TestParseLimpieza
+--- PASS: TestParseLimpieza (0.00s)
+=== RUN   TestEsquemaFallecidos
+--- PASS: TestEsquemaFallecidos (0.00s)
+=== RUN   TestConcurrenteIgualSecuencial
+--- PASS: TestConcurrenteIgualSecuencial (0.96s)
+=== RUN   TestEDA
+--- PASS: TestEDA (0.00s)
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/data	1.065s
+=== RUN   TestGradienteNumerico
+--- PASS: TestGradienteNumerico (0.00s)
+=== RUN   TestParaleloConverge
+--- PASS: TestParaleloConverge (0.31s)
+=== RUN   TestLetalidadEsperadaCalibrada
+--- PASS: TestLetalidadEsperadaCalibrada (0.22s)
+PASS
+ok  	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/ml	0.555s
+?   	github.com/UPC-CC65-202620/tf-caso1-epidemiologia-go/internal/store	[no test files]

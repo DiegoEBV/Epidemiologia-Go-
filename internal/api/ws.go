@@ -90,7 +90,7 @@ func (h *Hub) Clientes() int {
 
 var actualizador = websocket.Upgrader{
 	ReadBufferSize: 1024, WriteBufferSize: 4096,
-	CheckOrigin: func(r *http.Request) bool { return true }, // la SPA se sirve desde otro origen (CORS)
+	Subprotocols: []string{"epidemiologia"},
 }
 
 // manejarWS: GET /ws?token=JWT
@@ -101,18 +101,22 @@ func (s *Servidor) manejarWS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	c := &clienteWS{conn: conn, envio: make(chan []byte, 64)}
-	s.hub.alta <- c
 	// Mensaje de bienvenida con el estado actual.
 	if b, err := json.Marshal(Evento{Tipo: "estado", Ts: time.Now(), Datos: s.app.EstadoResumen()}); err == nil {
 		c.envio <- b
 	}
+	s.hub.alta <- c
 
 	// Escritor: única goroutine que escribe en la conexión.
 	go func() {
 		ping := time.NewTicker(25 * time.Second)
 		defer func() { ping.Stop(); conn.Close() }()
+		vencimiento := time.NewTimer(time.Until(time.Unix(usuarioDe(r.Context()).Exp, 0)))
+		defer vencimiento.Stop()
 		for {
 			select {
+			case <-vencimiento.C:
+				return
 			case msg, ok := <-c.envio:
 				_ = conn.SetWriteDeadline(time.Now().Add(5 * time.Second))
 				if !ok {

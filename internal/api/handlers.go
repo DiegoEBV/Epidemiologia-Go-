@@ -258,7 +258,10 @@ func (s *Servidor) dataset(w http.ResponseWriter, r *http.Request) {
 		s.errorDe(w, err)
 		return
 	}
-	responderJSON(w, http.StatusOK, d)
+	responderJSON(w, http.StatusOK, struct {
+		*store.Dataset
+		Fuente string `json:"fuente_datos,omitempty"`
+	}{d, s.cfg.FuenteDatos})
 }
 
 // POST /api/entrenamientos (solo admin) → 202 Accepted y el trabajo corre en segundo plano.

@@ -172,8 +172,13 @@ func TestRutasYAuth(t *testing.T) {
 	if c := pedir("POST", "/admin", admin).Code; c != 200 {
 		t.Fatalf("admin: %d", c)
 	}
-	if c := pedir("OPTIONS", "/admin", "").Code; c != 204 {
-		t.Fatalf("preflight CORS: %d", c)
+	req := httptest.NewRequest(http.MethodOptions, "/admin", nil)
+	req.Header.Set("Origin", "https://example.invalid")
+	req.Header.Set("Access-Control-Request-Method", http.MethodPost)
+	preflight := httptest.NewRecorder()
+	h.ServeHTTP(preflight, req)
+	if preflight.Code != http.StatusMethodNotAllowed || preflight.Header().Get("Access-Control-Allow-Origin") != "" {
+		t.Fatalf("preflight de un origen ajeno: %d %v", preflight.Code, preflight.Header())
 	}
 	rec := pedir("GET", "/swagger/openapi.yaml", "")
 	if rec.Code != 200 || !strings.Contains(rec.Body.String(), "openapi: 3.0.3") {

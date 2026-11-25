@@ -1,0 +1,633 @@
+{
+  "sin_token_http": 401,
+  "/api/entrenamientos_analista_http": 403,
+  "/api/metricas_analista_http": 403,
+  "token_en_url_rest_http": 401,
+  "cors_origen_ajeno": "sin autorización CORS",
+  "ws_origen_ajeno_http": 403,
+  "simulaciones": [
+    {
+      "entrada": {
+        "edad": 72,
+        "sexo": "M",
+        "departamento": "LIMA",
+        "fecha": "2021-04-15"
+      },
+      "letalidad_estimada": 0.20092564361978904,
+      "nivel_riesgo": "MUY ALTO",
+      "latencia_ms": 0.711,
+      "modelo_version": 3
+    },
+    {
+      "entrada": {
+        "edad": 25,
+        "sexo": "M",
+        "departamento": "LIMA",
+        "fecha": "2021-04-15"
+      },
+      "letalidad_estimada": 0.009219554740442584,
+      "nivel_riesgo": "BAJO",
+      "latencia_ms": 0.763,
+      "modelo_version": 3
+    }
+  ],
+  "dataset": {
+    "cargado": "2026-11-25T00:29:55.093Z",
+    "huella": "positivos_covid.csv:79340992:1795562768;fallecidos_covid.csv:5908656:1795562768;",
+    "archivos": [
+      "positivos_covid.csv",
+      "fallecidos_covid.csv"
+    ],
+    "limpieza": [
+      {
+        "fuente": "positivos",
+        "leidas": 1100000,
+        "validas": 1087810,
+        "descartes": {
+          "Departamento vacío o fuera de catálogo": 3324,
+          "Edad fuera de rango (<0 o >110)": 1090,
+          "Edad vacía / no numérica": 4424,
+          "Fecha vacía o inválida": 1111,
+          "Número de columnas incorrecto": 0,
+          "Sexo vacío o no reconocido": 2241
+        },
+        "duracion_s": 0.400632629,
+        "filas_por_seg": 2745657.5435347278
+      },
+      {
+        "fuente": "fallecidos",
+        "leidas": 58437,
+        "validas": 58320,
+        "descartes": {
+          "Departamento vacío o fuera de catálogo": 0,
+          "Edad fuera de rango (<0 o >110)": 0,
+          "Edad vacía / no numérica": 117,
+          "Fecha vacía o inválida": 0,
+          "Número de columnas incorrecto": 0,
+          "Sexo vacío o no reconocido": 0
+        },
+        "duracion_s": 0.216570349,
+        "filas_por_seg": 269829.18146380235
+      }
+    ],
+    "positivos": 1087810,
+    "fallecidos": 58320,
+    "letalidad_global": 0.05361230361919821,
+    "provincias": 70,
+    "n_train": 916947,
+    "n_test": 229183,
+    "impacto_mes_desde": 202310,
+    "letalidad_por_edad": {
+      "0-17": 0.07014564450925738,
+      "18-29": 0.30328575412620745,
+      "30-39": 0.8475073027286316,
+      "40-49": 2.1987082588978977,
+      "50-59": 6.100642433650972,
+      "60-69": 12.974691615162927,
+      "70-79": 26.12513354700855,
+      "80+": 48.58524052601332
+    },
+    "carga_s": 0.644736512,
+    "fuente_datos": "Muestra sintética reproducible"
+  },
+  "entrenamiento": {
+    "id": "20261125-003018-42e873607c48",
+    "estado": "completado",
+    "solicitante": "admin",
+    "config": {
+      "Workers": 4,
+      "Epocas": 2,
+      "LoteGlobal": 8192,
+      "TasaAprend": 0.1,
+      "Decaimiento": 0.5,
+      "L2": 1e-05,
+      "Semilla": 42
+    },
+    "nodos_solicitados": 4,
+    "creado": "2026-11-25T00:30:18.794Z",
+    "inicio": "2026-11-25T00:30:18.796Z",
+    "fin": "2026-11-25T00:30:19.295Z",
+    "historial": [
+      {
+        "epoca": 1,
+        "perdida": 0.49897894560683037,
+        "duracion_s": 0.142168589
+      },
+      {
+        "epoca": 2,
+        "perdida": 0.43594249860453727,
+        "duracion_s": 0.142150497
+      }
+    ],
+    "distribucion": {
+      "nodos": [
+        {
+          "id": "node1",
+          "worker": 0,
+          "registros": 229236,
+          "envio_ms": 69.737,
+          "carga_ms": 30.501
+        },
+        {
+          "id": "node2",
+          "worker": 1,
+          "registros": 229236,
+          "envio_ms": 73.053,
+          "carga_ms": 29.557
+        },
+        {
+          "id": "node3",
+          "worker": 2,
+          "registros": 229236,
+          "envio_ms": 69.018,
+          "carga_ms": 27.838
+        },
+        {
+          "id": "node4",
+          "worker": 3,
+          "registros": 229239,
+          "envio_ms": 70.72,
+          "carga_ms": 29.394
+        }
+      ],
+      "lote_local": 2048,
+      "pasos_epoca": 111,
+      "distribucion_s": 0.073186286,
+      "normalizacion": {
+        "MediaEdad": 40.40938243977024,
+        "DesvEdad": 21.040697669792575,
+        "PesoPos": 18.652935250873394
+      }
+    },
+    "modelo_version": 4,
+    "metricas": {
+      "N": 229183,
+      "TP": 10144,
+      "FP": 51404,
+      "TN": 166116,
+      "FN": 1519,
+      "Accuracy": 0.7690797310446237,
+      "Precision": 0.16481445375966725,
+      "Recall": 0.8697590671353854,
+      "F1": 0.2771168267063693,
+      "Especificidad": 0.7636815005516734,
+      "AUC": 0.8870207787602788,
+      "AccuracyBaseline": 0.9491105361217891
+    },
+    "duracion_s": 0.499617198
+  },
+  "impacto": {
+    "modelo_version": 4,
+    "casos_desde": 202310,
+    "pregunta": "¿En qué provincias se concentrará el mayor número de casos graves según el perfil de sus casos positivos recientes?",
+    "provincias": [
+      {
+        "modelo_version": 4,
+        "ranking": 1,
+        "departamento": "LIMA",
+        "provincia": "CAÑETE",
+        "positivos": 657,
+        "graves_esperados": 24.118241193016846,
+        "tasa_por_1000": 36.70965173975167,
+        "pct_mayores_60": 16.894977168949772,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 2,
+        "departamento": "LIMA",
+        "provincia": "BARRANCA",
+        "positivos": 689,
+        "graves_esperados": 23.64586447913736,
+        "tasa_por_1000": 34.31910664606293,
+        "pct_mayores_60": 18.1422351233672,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 3,
+        "departamento": "LIMA",
+        "provincia": "LIMA",
+        "positivos": 679,
+        "graves_esperados": 23.607688047719755,
+        "tasa_por_1000": 34.76831818515428,
+        "pct_mayores_60": 17.23122238586156,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 4,
+        "departamento": "LIMA",
+        "provincia": "HUARAL",
+        "positivos": 679,
+        "graves_esperados": 23.316561591390307,
+        "tasa_por_1000": 34.339560517511494,
+        "pct_mayores_60": 19.293078055964653,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 5,
+        "departamento": "LIMA",
+        "provincia": "HUAURA",
+        "positivos": 671,
+        "graves_esperados": 22.991705504991423,
+        "tasa_por_1000": 34.26483681816904,
+        "pct_mayores_60": 19.374068554396423,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 6,
+        "departamento": "CALLAO",
+        "provincia": "CALLAO",
+        "positivos": 325,
+        "graves_esperados": 14.510502848930392,
+        "tasa_por_1000": 44.64770107363197,
+        "pct_mayores_60": 19.076923076923077,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 7,
+        "departamento": "AREQUIPA",
+        "provincia": "AREQUIPA",
+        "positivos": 108,
+        "graves_esperados": 6.437107025875542,
+        "tasa_por_1000": 59.60284283218094,
+        "pct_mayores_60": 18.51851851851852,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 8,
+        "departamento": "JUNIN",
+        "provincia": "TARMA",
+        "positivos": 73,
+        "graves_esperados": 5.638440839236796,
+        "tasa_por_1000": 77.23891560598351,
+        "pct_mayores_60": 24.65753424657534,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 9,
+        "departamento": "LA LIBERTAD",
+        "provincia": "TRUJILLO",
+        "positivos": 68,
+        "graves_esperados": 4.701514310476715,
+        "tasa_por_1000": 69.13991633053992,
+        "pct_mayores_60": 25,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 10,
+        "departamento": "TUMBES",
+        "provincia": "TUMBES",
+        "positivos": 28,
+        "graves_esperados": 4.139446728538749,
+        "tasa_por_1000": 147.83738316209818,
+        "pct_mayores_60": 32.142857142857146,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 11,
+        "departamento": "PIURA",
+        "provincia": "TALARA",
+        "positivos": 73,
+        "graves_esperados": 4.077536147154638,
+        "tasa_por_1000": 55.85665955006353,
+        "pct_mayores_60": 16.438356164383563,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 12,
+        "departamento": "ANCASH",
+        "provincia": "SANTA",
+        "positivos": 78,
+        "graves_esperados": 3.9948192397151345,
+        "tasa_por_1000": 51.215631278399165,
+        "pct_mayores_60": 17.94871794871795,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 13,
+        "departamento": "CUSCO",
+        "provincia": "URUBAMBA",
+        "positivos": 68,
+        "graves_esperados": 3.9813826483989323,
+        "tasa_por_1000": 58.54974482939606,
+        "pct_mayores_60": 23.529411764705884,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 14,
+        "departamento": "CUSCO",
+        "provincia": "CANCHIS",
+        "positivos": 75,
+        "graves_esperados": 3.751203199636964,
+        "tasa_por_1000": 50.01604266182619,
+        "pct_mayores_60": 21.333333333333332,
+        "mes_desde": 202310
+      },
+      {
+        "modelo_version": 4,
+        "ranking": 15,
+        "departamento": "JUNIN",
+        "provincia": "HUANCAYO",
+        "positivos": 76,
+        "graves_esperados": 3.6977989551390404,
+        "tasa_por_1000": 48.65524940972422,
+        "pct_mayores_60": 15.789473684210526,
+        "mes_desde": 202310
+      }
+    ],
+    "total_graves_esperados": 172.6098127593586,
+    "cache": true
+  },
+  "cluster": {
+    "entrenamiento_actual": "",
+    "entrenando": false,
+    "nodos": [
+      {
+        "id": "node1",
+        "direccion": "node1:9000",
+        "conectado": true,
+        "rtt_ms": 0.384,
+        "ultimo_latido": "2026-11-25T00:30:18.450741242Z",
+        "estado": {
+          "ID": "node1",
+          "Host": "node1",
+          "CPUs": 12,
+          "Goroutines": 4,
+          "HeapMB": 0.3266754150390625,
+          "CPUPct": 0.012203067814639397,
+          "Registros": 0,
+          "Trabajo": "",
+          "Pasos": 0,
+          "Tareas": 13,
+          "UptimeS": 25.158198532
+        }
+      },
+      {
+        "id": "node2",
+        "direccion": "node2:9000",
+        "conectado": true,
+        "rtt_ms": 0.546,
+        "ultimo_latido": "2026-11-25T00:30:18.450772024Z",
+        "estado": {
+          "ID": "node2",
+          "Host": "node2",
+          "CPUs": 12,
+          "Goroutines": 4,
+          "HeapMB": 0.3265228271484375,
+          "CPUPct": 0.013354282518089313,
+          "Registros": 0,
+          "Trabajo": "",
+          "Pasos": 0,
+          "Tareas": 13,
+          "UptimeS": 25.198178884
+        }
+      },
+      {
+        "id": "node3",
+        "direccion": "node3:9000",
+        "conectado": true,
+        "rtt_ms": 0.435,
+        "ultimo_latido": "2026-11-25T00:30:18.450723682Z",
+        "estado": {
+          "ID": "node3",
+          "Host": "node3",
+          "CPUs": 12,
+          "Goroutines": 4,
+          "HeapMB": 0.3307647705078125,
+          "CPUPct": 0.011903252825706187,
+          "Registros": 0,
+          "Trabajo": "",
+          "Pasos": 0,
+          "Tareas": 13,
+          "UptimeS": 25.181618031
+        }
+      },
+      {
+        "id": "node4",
+        "direccion": "node4:9000",
+        "conectado": true,
+        "rtt_ms": 0.535,
+        "ultimo_latido": "2026-11-25T00:30:18.450723683Z",
+        "estado": {
+          "ID": "node4",
+          "Host": "node4",
+          "CPUs": 12,
+          "Goroutines": 4,
+          "HeapMB": 0.332427978515625,
+          "CPUPct": 0.013703603903938894,
+          "Registros": 0,
+          "Trabajo": "",
+          "Pasos": 0,
+          "Tareas": 13,
+          "UptimeS": 25.198554927
+        }
+      }
+    ],
+    "nodos_activos": 4,
+    "nodos_total": 4,
+    "topologia": "estrella (coordinador ↔ nodos, TCP persistente, gob)"
+  },
+  "metricas": {
+    "auditoria_descartada": 0,
+    "cache_hits": 0,
+    "colecciones_mongo": {
+      "dataset_resumen": 1,
+      "entrenamientos": 4,
+      "impacto_provincias": 280,
+      "metricas_cluster": 1364,
+      "modelos": 4,
+      "predicciones": 6,
+      "usuarios": 2
+    },
+    "goroutines": 27,
+    "heap_mb": 77.86200714111328,
+    "latencias": [
+      {
+        "ruta": "GET /api/impacto",
+        "peticiones": 8,
+        "errores_5xx": 0,
+        "promedio_ms": 1.338,
+        "p50_ms": 0.694,
+        "p95_ms": 2.605,
+        "p99_ms": 2.605,
+        "max_ms": 2.76,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /api/dataset",
+        "peticiones": 6,
+        "errores_5xx": 0,
+        "promedio_ms": 1.262,
+        "p50_ms": 1.182,
+        "p95_ms": 1.38,
+        "p99_ms": 1.38,
+        "max_ms": 1.671,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /api/modelo",
+        "peticiones": 6,
+        "errores_5xx": 0,
+        "promedio_ms": 0.1,
+        "p50_ms": 0.087,
+        "p95_ms": 0.138,
+        "p99_ms": 0.138,
+        "max_ms": 0.181,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "POST /api/auth/login",
+        "peticiones": 5,
+        "errores_5xx": 0,
+        "promedio_ms": 18.863,
+        "p50_ms": 19.647,
+        "p95_ms": 21.504,
+        "p99_ms": 21.504,
+        "max_ms": 26.378,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /api/cluster",
+        "peticiones": 5,
+        "errores_5xx": 0,
+        "promedio_ms": 0.107,
+        "p50_ms": 0.11,
+        "p95_ms": 0.12,
+        "p99_ms": 0.12,
+        "max_ms": 0.143,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /health",
+        "peticiones": 4,
+        "errores_5xx": 0,
+        "promedio_ms": 1.021,
+        "p50_ms": 0.914,
+        "p95_ms": 0.947,
+        "p99_ms": 0.947,
+        "max_ms": 1.347,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /api/entrenamientos",
+        "peticiones": 4,
+        "errores_5xx": 0,
+        "promedio_ms": 1.6,
+        "p50_ms": 1.67,
+        "p95_ms": 1.686,
+        "p99_ms": 1.686,
+        "max_ms": 1.694,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /assets/",
+        "peticiones": 2,
+        "errores_5xx": 0,
+        "promedio_ms": 0.577,
+        "p50_ms": 0.346,
+        "p95_ms": 0.346,
+        "p99_ms": 0.346,
+        "max_ms": 0.809,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "POST /api/predicciones",
+        "peticiones": 2,
+        "errores_5xx": 0,
+        "promedio_ms": 0.901,
+        "p50_ms": 0.88,
+        "p95_ms": 0.88,
+        "p99_ms": 0.88,
+        "max_ms": 0.922,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "POST /api/entrenamientos",
+        "peticiones": 2,
+        "errores_5xx": 0,
+        "promedio_ms": 0.888,
+        "p50_ms": 0.165,
+        "p95_ms": 0.165,
+        "p99_ms": 0.165,
+        "max_ms": 1.61,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /api/metricas",
+        "peticiones": 2,
+        "errores_5xx": 0,
+        "promedio_ms": 1.994,
+        "p50_ms": 0.049,
+        "p95_ms": 0.049,
+        "p99_ms": 0.049,
+        "max_ms": 3.94,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /ws",
+        "peticiones": 2,
+        "errores_5xx": 0,
+        "promedio_ms": 318.74,
+        "p50_ms": 0.112,
+        "p95_ms": 0.112,
+        "p99_ms": 0.112,
+        "max_ms": 637.369,
+        "pct_bajo_100ms": 50
+      },
+      {
+        "ruta": "GET /{$}",
+        "peticiones": 1,
+        "errores_5xx": 0,
+        "promedio_ms": 0.401,
+        "p50_ms": 0.401,
+        "p95_ms": 0.401,
+        "p99_ms": 0.401,
+        "max_ms": 0.401,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET (sin ruta)",
+        "peticiones": 1,
+        "errores_5xx": 0,
+        "promedio_ms": 0.027,
+        "p50_ms": 0.027,
+        "p95_ms": 0.027,
+        "p99_ms": 0.027,
+        "max_ms": 0.027,
+        "pct_bajo_100ms": 100
+      },
+      {
+        "ruta": "GET /api/entrenamientos/{id}",
+        "peticiones": 1,
+        "errores_5xx": 0,
+        "promedio_ms": 0.903,
+        "p50_ms": 0.903,
+        "p95_ms": 0.903,
+        "p99_ms": 0.903,
+        "max_ms": 0.903,
+        "pct_bajo_100ms": 100
+      }
+    ],
+    "predicciones_proceso": 2,
+    "predicciones_redis": 6,
+    "tasa_cache": 0,
+    "uptime_s": 25.697308672
+  },
+  "spa": {
+    "flujos": 6,
+    "errores_js": [],
+    "estado_ws": "En vivo"
+  }
+}

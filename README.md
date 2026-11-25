@@ -4,6 +4,8 @@
   (Parameter Server con goroutines y canales) + evaluación + análisis de impacto.
 - **Entregable 2 (PC4):** clúster de 4 nodos ML por TCP, API coordinadora REST/WebSocket con
   Swagger y JWT, MongoDB (persistente) y Redis (caché), todo con Docker Compose.
+- **Entregable 3 (TB2):** SPA React con panorama provincial, simulador, entrenamiento
+  en vivo y administración del clúster. La API de Go sirve los recursos compilados.
 
 ## Dataset y Datos
 
@@ -17,18 +19,30 @@ Descargar del Portal de Datos Abiertos y dejar en `data/`:
 El cargador ubica las columnas por **nombre** en el encabezado y detecta el separador (`;` o `,`).
 Los identificadores (`id_persona`, `UUID`, `FECHA_NAC`, `UBIGEO`) **no se cargan**.
 
-Sin los CSV reales: `go run ./cmd/gensample -n 2500000 -out data`.
-
-## PC4: levantar el sistema
+Sin los CSV reales, genera una muestra determinista:
 
 ```bash
-docker compose up --build -d          # node1..node4 + api + mongo + redis
-docker compose logs -f api            # esperar "estado del coordinador: listo"
-open http://localhost:8080/swagger/   # documentación interactiva
+go run ./cmd/gensample -n 1100000 -out data -seed 7
 ```
+
+Configura `DATA_SOURCE` como `Muestra sintética reproducible` para esa muestra.
+Con datos oficiales usa `MINSA (datos históricos)`. `DATA_PATH` permite montar
+otra carpeta de CSV. Define estas variables en el entorno o en un archivo `.env` local.
+
+## TB2: levantar el sistema
+
+```bash
+docker compose up --build -d          # node1..node4 + API/SPA + MongoDB + Redis
+docker compose logs -f api            # esperar "estado del coordinador: listo"
+```
+
+Abre [la interfaz](http://localhost:8080) o [Swagger](http://localhost:8080/swagger/).
+Para usar otro puerto local, configura `HTTP_PORT` antes del despliegue.
 
 Usuarios de prueba: `admin / admin123` (puede entrenar) y `analista / analista123`.
 Las credenciales y el secreto JWT se cambian con `ADMIN_PASS`, `ANALISTA_PASS` y `JWT_SECRET`.
+Las cuentas se crean al inicializar MongoDB. Usa un volumen nuevo si necesitas otras credenciales.
+El puerto se vincula a loopback para la demostración local.
 
 ```
               :8080
@@ -52,8 +66,17 @@ cliente ───────────► api (coordinador)
 | GET | `/api/impacto?top=15` | Provincias con más casos graves esperados (calculado en el clúster) |
 | POST | `/api/entrenamientos` | Entrenamiento distribuido (admin) |
 | GET | `/api/cluster` | Estado de los nodos (latido, RTT, CPU) |
-| GET | `/api/metricas` | Latencia p50/p95/p99 por ruta |
-| GET | `/ws?token=` | Eventos en tiempo real |
+| GET | `/api/metricas` | Latencia p50/p95/p99 por ruta (admin) |
+| GET | `/ws` | Eventos en vivo. La SPA negocia `epidemiologia` y envía el JWT en un subprotocolo separado |
+
+La SPA usa rutas relativas del mismo origen y guarda el JWT en memoria durante la sesión.
+`/api/entrenamientos` (POST) y `/api/metricas` requieren admin. WebSocket valida el origen
+en el navegador y cierra la sesión al expirar el token. Para publicar fuera de loopback,
+configura TLS en un proxy, credenciales propias y un secreto JWT distinto del de demostración.
+
+El ranking usa la suma de estimaciones de letalidad por provincia como aproximación exploratoria
+a la carga de casos graves. El panel permite comparar volumen y tasa por mil positivos registrados.
+Los resultados corresponden a la ventana histórica disponible en los CSV.
 
 ### Pruebas y evidencias
 
@@ -69,6 +92,18 @@ docker compose exec redis redis-cli                              # inspeccionar 
 
 Resultados: `results/pc4/` (JSON, logs y capturas) y `results/figs/pc4_*.png`.
 Informe: `cd informe && npm i docx@9 && node build_pc4.js`.
+
+Para repetir la prueba funcional del TB2 con Docker listo y cuatro nodos activos:
+
+```bash
+python -m pip install playwright
+python -m playwright install chromium
+python scripts/smoke_tb2.py --base-url http://127.0.0.1:8080 --out results/tb2
+go run ./cmd/loadtest -url http://127.0.0.1:8080 -c 32 -d 20s -out results/tb2/latencia.json
+```
+
+El smoke test autentica ambos roles, verifica controles de acceso, ejecuta dos simulaciones
+y solicita dos épocas al clúster. Genera capturas y evidencia JSON en `results/tb2/`.
 
 ## PC3: pipeline local
 
