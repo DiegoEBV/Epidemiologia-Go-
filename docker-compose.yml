@@ -19,10 +19,8 @@
 name: epidemiologia-go
 
 x-nodo: &nodo
-  build:
-    context: .
-    target: node
-  image: epidemiologia-go/node:pc4
+  image: epidemiologia-go/node:tb2
+  pull_policy: never
   restart: unless-stopped
   networks: [cluster]
   expose: ["9000"]
@@ -34,6 +32,9 @@ x-nodo: &nodo
 services:
   node1:
     <<: *nodo
+    build:
+      context: .
+      target: node
     hostname: node1
     environment: {<<: *nodo-env, NODE_ID: node1}
   node2:
@@ -78,7 +79,7 @@ services:
     build:
       context: .
       target: api
-    image: epidemiologia-go/api:pc4
+    image: epidemiologia-go/api:tb2
     restart: unless-stopped
     depends_on:
       mongo: {condition: service_healthy}
@@ -88,12 +89,13 @@ services:
       node3: {condition: service_started}
       node4: {condition: service_started}
     networks: [publica, cluster, datos]
-    ports: ["8080:8080"]
-    volumes: ["./data:/data:ro"]
+    ports: ["127.0.0.1:${HTTP_PORT:-8080}:8080"]
+    volumes: ["${DATA_PATH:-./data}:/data:ro"]
     mem_limit: 2g
     environment:
       PORT: "8080"
       DATA_DIR: /data
+      DATA_SOURCE: ${DATA_SOURCE:-}
       NODES: node1:9000,node2:9000,node3:9000,node4:9000
       MONGO_URI: mongodb://mongo:27017
       MONGO_DB: epidemiologia

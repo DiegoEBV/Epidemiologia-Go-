@@ -7,3 +7,6 @@ postman
 scripts
 *.test
 bin
+web/node_modules
+web/dist
+.npm-cache

@@ -38,6 +38,8 @@ func main() {
 	meses, _ := strconv.Atoi(env("MESES_IMPACTO", "4"))
 	epocas, _ := strconv.Atoi(env("EPOCAS", "6"))
 	cfg := api.Config{
+		WebDir:              env("WEB_DIR", "web/dist"),
+		FuenteDatos:         env("DATA_SOURCE", ""),
 		Puerto:              env("PORT", "8080"),
 		MongoURI:            env("MONGO_URI", "mongodb://localhost:27017"),
 		MongoDB:             env("MONGO_DB", "epidemiologia"),

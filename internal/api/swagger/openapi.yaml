@@ -209,19 +209,22 @@ paths:
   /api/metricas:
     get:
       tags: [Sistema]
-      summary: Latencias por ruta (p50/p95/p99), caché y conteo de colecciones
+      summary: Latencias por ruta (p50/p95/p99), caché y conteo de colecciones (admin)
       responses:
         "200": {description: Métricas de rendimiento}
+        "403": {description: El rol no tiene acceso administrativo}
   /ws:
     get:
       tags: [Sistema]
       summary: WebSocket de eventos en tiempo real
       description: |
-        Conectar con `ws://localhost:8080/ws?token=JWT`. Eventos JSON
+        Desde el navegador del mismo origen, usar los subprotocolos
+        `epidemiologia` y `jwt.JWT`. Los clientes de PC4 también admiten
+        `ws://localhost:8080/ws?token=JWT`. Eventos JSON
         `{tipo, ts, datos}` con `tipo` ∈ `estado`, `cluster` (cada 2 s),
         `entrenamiento` (cada época).
       parameters:
-        - {name: token, in: query, required: true, schema: {type: string}}
+        - {name: token, in: query, required: false, schema: {type: string}}
       responses:
         "101": {description: Cambio a protocolo WebSocket}
 components:

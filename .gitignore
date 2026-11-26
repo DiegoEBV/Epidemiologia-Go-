@@ -2,6 +2,10 @@ data/*.csv
 **/*.csv
 bin/
 *.test
+web/node_modules/
+web/dist/
+.npm-cache/
+.env
 
 # Documentos (informes, enunciados)
 *.docx
